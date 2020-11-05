@@ -3,8 +3,9 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/sweetgreen"
   },
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.0.17",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "description": "SG node logger",
   "repository": "git@github.com:sweetgreen/sg-node-logger.git",
   "author": "Unknown Kale",
@@ -22,8 +23,12 @@
   },
   "dependencies": {
     "@types/node": "^14.14.6",
+    "@types/winston": "^2.4.4",
     "winston": "^3.3.3"
   },
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
