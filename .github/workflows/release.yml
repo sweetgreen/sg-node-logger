@@ -22,7 +22,7 @@ jobs:
           tag: 'v1'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo ${{ steps.checkTag.outputs.exists }}
+      - run: echo ${{ steps.checkTag.outputs.exists }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
