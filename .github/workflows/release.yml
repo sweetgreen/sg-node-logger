@@ -18,15 +18,13 @@ jobs:
       - name: Check if Git tag exists
         uses: mukunku/tag-exists-action@v1.0.0
         id: checkTag
-        with:
-          tag: 'v1'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: echo ${{ steps.checkTag.outputs.exists }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
-        if: env.HEAD_TAG != '' # only run if we have a tag
+        if: ${{ steps.checkTag.outputs.exists }} # only run if we have a tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
