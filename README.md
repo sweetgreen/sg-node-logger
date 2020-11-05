@@ -2,16 +2,21 @@
 
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+To use this logger follow the instructions below:
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-
-- npm
+- Add github package registry to your project
 
 ```sh
-npm install npm@latest -g
+# Because this package is hosted in @sweetgreen's github repository, you will need to add our registry to your project:
+
+# In your project root:
+echo "//npm.pkg.github.com/:_authToken=YOUR_GITHUB_PERSONAL_ACCESS_TOKEN\nregistry=https://npm.pkg.github.com/sweetgreen" >> .npmrc
+
+# See https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token to create a personal access token.
+
+# NOTE: DO NOT COMMIT YOUR GITHUB_PERSONAL_ACCESS_TOKEN!
 ```
 
 ### Installation
@@ -19,7 +24,11 @@ npm install npm@latest -g
 1. Add to your node project
 
 ```sh
+# yarn
 yarn add @sweetgreen/sg-node-logger
+
+# npm
+npm i @sweetgreen/sg-node-logger
 ```
 
 <!-- USAGE EXAMPLES -->
