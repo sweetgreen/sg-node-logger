@@ -16,7 +16,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Check if Git tag exists
-        run: echo "name=HEAD_TAG::$(git tag --points-at HEAD^2)" >> $GITHUB_ENV
+        uses: mukunku/tag-exists-action@v1.0.0
+        id: checkTag
+        with:
+          tag: 'v1'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo ${{ steps.checkTag.outputs.exists }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
