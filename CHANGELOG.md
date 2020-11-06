@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.4...v1.0.5) (2020-11-06)
+
+
+### Bug Fixes
+
+* **gh actions:** address error in release ([ad6816b](https://github.com/sweetgreen/sg-node-logger/commit/ad6816b6052a48a63f7a65e4eda25ba8b8b3643f))
+
 ## [1.0.4](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.3...v1.0.4) (2020-11-06)
 
 
