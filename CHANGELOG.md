@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.6...v1.0.7) (2020-11-06)
+
+
+### Bug Fixes
+
+* **gh actions:** fix conditional ([f16a005](https://github.com/sweetgreen/sg-node-logger/commit/f16a005b1a183ebd14aef597a42b76983e78dc47))
+
 ## [1.0.6](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.5...v1.0.6) (2020-11-06)
 
 
