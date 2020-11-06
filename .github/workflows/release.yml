@@ -15,6 +15,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - run: yarn install
       - name: Create Release
         run: npx semantic-release
         env:
