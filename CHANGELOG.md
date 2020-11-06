@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.2...v1.0.3) (2020-11-06)
+
+
+### Bug Fixes
+
+* **ah actions:** more test ([ff44720](https://github.com/sweetgreen/sg-node-logger/commit/ff44720eab12181195ed3679c5e25774066e77fe))
+
 ## [1.0.2](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.1...v1.0.2) (2020-11-06)
 
 
