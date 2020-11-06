@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.5...v1.0.6) (2020-11-06)
+
+
+### Bug Fixes
+
+* **gh actions:** consolidate workflow ([511947d](https://github.com/sweetgreen/sg-node-logger/commit/511947d29b6b2f4fedd4fb068ef2bd6e7085a5a0))
+
 ## [1.0.5](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.4...v1.0.5) (2020-11-06)
 
 
