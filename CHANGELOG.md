@@ -1,3 +1,10 @@
+## [1.0.9](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.8...v1.0.9) (2020-11-06)
+
+
+### Bug Fixes
+
+* **gh actions:** update NODE_AUTH_TOKEN to use PAT ([198d14f](https://github.com/sweetgreen/sg-node-logger/commit/198d14f3433da6e6582a2634905c1bba6f75e15d))
+
 ## [1.0.8](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.7...v1.0.8) (2020-11-06)
 
 
