@@ -1,3 +1,11 @@
+## [1.0.2](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.1...v1.0.2) (2020-11-06)
+
+
+### Bug Fixes
+
+* **gh actions:** re-add GITHUB_TOKEN ([575d805](https://github.com/sweetgreen/sg-node-logger/commit/575d80518a3d9d1b6add777676d8958410fec50b))
+* **gh actions:** testing NODE_AUTH_TOKEN ([a6a5be1](https://github.com/sweetgreen/sg-node-logger/commit/a6a5be16db1179b175996f8ddf243b508d8c64f7))
+
 ## [1.0.1](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.0...v1.0.1) (2020-11-06)
 
 
