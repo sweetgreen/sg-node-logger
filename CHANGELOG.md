@@ -1,3 +1,10 @@
+## [1.0.8](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.7...v1.0.8) (2020-11-06)
+
+
+### Bug Fixes
+
+* **gh actions:** fix failing publish ([45cc7e0](https://github.com/sweetgreen/sg-node-logger/commit/45cc7e0d46c75213b7fd419e2afc0929c86dcd7b))
+
 ## [1.0.7](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.6...v1.0.7) (2020-11-06)
 
 
