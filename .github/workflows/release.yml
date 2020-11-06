@@ -19,5 +19,4 @@ jobs:
       - name: Create Release
         run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_ACTIONS_PAT }}
-          NPM_TOKEN: ${{ secrets.GH_ACTIONS_PAT }}
+          NODE_AUTH_TOKEN: ${{secrets.GH_ACTIONS_PAT}}
