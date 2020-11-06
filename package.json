@@ -12,7 +12,6 @@
   "author": "Unknown Kale",
   "license": "MIT",
   "devDependencies": {
-    "@octokit/core": "^3.2.1",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/git": "^9.0.0",
@@ -32,6 +31,7 @@
     "typescript": "^4.0.5"
   },
   "dependencies": {
+    "@octokit/core": "^3.2.1",
     "@types/node": "^14.14.6",
     "@types/winston": "^2.4.4",
     "winston": "^3.3.3"
