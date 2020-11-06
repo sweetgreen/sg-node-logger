@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.11...v1.1.0) (2020-11-06)
+
+
+### Features
+
+* **semantic release:** initial working semantic release ([797dee2](https://github.com/sweetgreen/sg-node-logger/commit/797dee26ee3de1d66ec2b48cdd83f7ecc3148f44))
+
 ## [1.0.11](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.10...v1.0.11) (2020-11-06)
 
 
