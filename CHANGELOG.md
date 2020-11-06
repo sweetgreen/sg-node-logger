@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.0...v1.0.1) (2020-11-06)
+
+
+### Bug Fixes
+
+* **gh actions:** fix failing workflow ([57d907f](https://github.com/sweetgreen/sg-node-logger/commit/57d907f0005fcd4ae7f78a8796e8fbd35a503b19))
+
 # 1.0.0 (2020-11-06)
 
 
