@@ -3,7 +3,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/sweetgreen"
   },
-  "version": "1.0.9",
+  "version": "1.0.10",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "description": "SG node logger",

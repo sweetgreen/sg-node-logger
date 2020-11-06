@@ -1,3 +1,10 @@
+## [1.0.10](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.9...v1.0.10) (2020-11-06)
+
+
+### Bug Fixes
+
+* **gh actions:** add more tokens ([31a087d](https://github.com/sweetgreen/sg-node-logger/commit/31a087d8e88d604ea1fc74fc49d9e76617fc9a43))
+
 ## [1.0.9](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.8...v1.0.9) (2020-11-06)
 
 
