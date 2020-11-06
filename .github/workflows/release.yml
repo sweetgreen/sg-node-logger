@@ -16,8 +16,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - run: yarn install
-      - name: Create Release
-        run: npx semantic-release
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v2
         env:
-          GH_TOKEN: ${{secrets.GH_ACTIONS_PAT}}
-          NODE_AUTH_TOKEN: ${{secrets.GH_ACTIONS_PAT}}
+          GITHUB_TOKEN: ${{secrets.GH_ACTIONS_PAT}}
+          NPM_TOKEN: ${{secrets.GH_ACTIONS_PAT}}
