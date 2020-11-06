@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.3...v1.0.4) (2020-11-06)
+
+
+### Bug Fixes
+
+* **gh actions:** use cycjimmy/semantic-release-action@v2 plugin instead ([d0e896d](https://github.com/sweetgreen/sg-node-logger/commit/d0e896d4a0f6a09987c7eb49adaf60092c52e6cc))
+
 ## [1.0.3](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.2...v1.0.3) (2020-11-06)
 
 
