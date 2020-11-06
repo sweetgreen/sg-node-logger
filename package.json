@@ -1,6 +1,5 @@
 {
   "name": "@sweetgreen/sg-node-logger",
-  "private": true,
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/sweetgreen"
   },
