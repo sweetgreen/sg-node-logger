@@ -19,7 +19,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-          NODE_AUTH_TOKEN: ${{secrets.GH_ACTIONS_PAT}}
           registry-url: https://npm.pkg.github.com/
 
       - run: yarn install
