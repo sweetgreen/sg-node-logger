@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.1.0...v1.2.0) (2020-11-06)
+
+
+### Features
+
+* **gh actions:** testing major version workflow ([529372b](https://github.com/sweetgreen/sg-node-logger/commit/529372b6918c64bda8fa8b0c9862a4ab5208fdbe))
+
 # [1.1.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.0.11...v1.1.0) (2020-11-06)
 
 
