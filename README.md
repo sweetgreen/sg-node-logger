@@ -1,3 +1,5 @@
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 <!-- GETTING STARTED -->
 
 ## Getting Started
@@ -47,4 +49,6 @@ sgLogger.info('salads');
 
 _This logger is merely a wrapper around Winston, please refer to their [Documentation](https://github.com/winstonjs/winston)_
 
-<!-- ROADMAP -->
+## Contributing
+
+This repo uses commitizen and is set up in such a way that when you commit, you'll be prompted with a commit wizard. Your inputs will determine what version CI will bump this package to 🍻
