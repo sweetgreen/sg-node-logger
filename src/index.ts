@@ -5,9 +5,9 @@
 // 4. add tests
 
 // wants:
-// 1. log to console
+// 1. log to console ✅
 // 2. send logs to cloudwatch
-// 3. single config file that
+// 3. config files that can be used by consumers to automatically configure logger to fit needs (i.e. using this logger in a raspberry pi env vs in ECS)
 
 import winston from 'winston';
 
