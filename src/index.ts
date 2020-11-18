@@ -1,5 +1,5 @@
 // TODO's
-// 1. update transports such that logs are saved to files
+// 1. update transports such that logs are saved to files ✅
 // 2. wrap this with fast-redact (https://github.com/davidmarkclements/fast-redact) such that clients can pass keys that should be redacted
 // 3. why do we use morgan? I see that morgan can be integrated with winston.
 // 4. add tests
