@@ -10,7 +10,7 @@
 5. Log to console ✅
 6. Send logs to cloudwatch
 7. Config files that can be used by consumers to automatically configure logger to fit needs (i.e. using this logger in a raspberry pi env vs in ECS)
-8. Add CODEOWNERS
+8. Add CODEOWNERS file. Set up gated commits.
 
 ## Getting Started
 
