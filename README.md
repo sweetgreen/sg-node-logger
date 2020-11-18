@@ -1,6 +1,16 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-<!-- GETTING STARTED -->
+## To Do's
+
+0. Change default branch to `main`
+1. Update transports such that logs are saved to files ✅
+2. Wrap this with fast-redact (https://github.com/davidmarkclements/fast-redact) such that clients can pass keys that should be redacted
+3. Why do we use morgan? I see that morgan can be integrated with winston.
+4. Add tests
+5. Log to console ✅
+6. Send logs to cloudwatch
+7. Config files that can be used by consumers to automatically configure logger to fit needs (i.e. using this logger in a raspberry pi env vs in ECS)
+8. Add CODEOWNERS
 
 ## Getting Started
 

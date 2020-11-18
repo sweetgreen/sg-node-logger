@@ -1,20 +1,12 @@
-// TODO's
-// 1. update transports such that logs are saved to files ✅
-// 2. wrap this with fast-redact (https://github.com/davidmarkclements/fast-redact) such that clients can pass keys that should be redacted
-// 3. why do we use morgan? I see that morgan can be integrated with winston.
-// 4. add tests
-
-// wants:
-// 1. log to console ✅
-// 2. send logs to cloudwatch
-// 3. config files that can be used by consumers to automatically configure logger to fit needs (i.e. using this logger in a raspberry pi env vs in ECS)
-
 import winston from 'winston';
 
 export const sgLogger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
-  defaultMeta: { service: 'dont-forget-to-update-default-meta' },
+  defaultMeta: {
+    service: 'dont-forget-to-update-default-meta',
+    otherKeys: 'test',
+  },
   transports: [
     // FIXME: confirm this is what we want with the wider engineering team; is this the right name? Is this the right location to output the log files?
     new winston.transports.File({ filename: 'error.log', level: 'error' }),
