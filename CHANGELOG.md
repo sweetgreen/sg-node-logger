@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.2.0...v1.3.0) (2020-11-18)
+
+
+### Features
+
+* **index.ts:** update logger to create log files; add more notes and fixmes ([f2e42cc](https://github.com/sweetgreen/sg-node-logger/commit/f2e42cca58165747b3a21d3c996efce6c0a6e066))
+
 # [1.2.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.1.0...v1.2.0) (2020-11-06)
 
 
