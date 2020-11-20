@@ -69,21 +69,23 @@ export interface TransportConfig {
 export interface SgLog {
   logLevel: string;
   message: string;
-  sessionId?: string;
-  requestId?: string;
   tags?: string[];
-  hostname?: string;
-  ipaddress?: string;
-  version?: string;
-  appName?: string;
-  deployment?: string;
   /** Any custom data - WARNING: DO NOT LOG PII */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any;
-  /** NOTE: automatically filled by Winston */
-  timestamp?: string;
   errorMessage?: string;
   errorStack?: string;
+  // NOTE: below fields are (or will be) automatically filled
+  // by this package
+  utcTimestamp?: string;
+  localTimestamp?: string;
+  sessionId?: string;
+  requestId?: string;
+  appName?: string;
+  appVersion?: string;
+  environment?: string;
+  hostname?: string;
+  ipaddress?: string;
   os?: string;
   osVersion?: string;
   osBuildNumber?: string;

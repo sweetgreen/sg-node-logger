@@ -1,3 +1,5 @@
+// NOTE: Special case to allow 'any' in the helper functions ONLY.
+// We want to support the passing of any shape for custom data.
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types */
 import dotenv from 'dotenv';
 import winston from 'winston';
@@ -46,9 +48,7 @@ function log(log: SgLog): void {
   logger.log(logLevel, message, otherFields);
 }
 
-// Special case to allow 'any'. We want to support the passing of
-// any shape with the logs.
-function logDebug(message: string, tags?: string[], customData?: any): void {
+function logDebug(message: string, customData?: any, tags?: string[]): void {
   log({
     logLevel: 'debug',
     message: message,
@@ -57,10 +57,7 @@ function logDebug(message: string, tags?: string[], customData?: any): void {
   });
 }
 
-// Special case to allow 'any'. We want to support the passing of
-// any shape with the logs.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-function logVerbose(message: string, tags?: string[], customData?: any): void {
+function logVerbose(message: string, customData?: any, tags?: string[]): void {
   log({
     logLevel: 'verbose',
     message: message,
@@ -69,10 +66,7 @@ function logVerbose(message: string, tags?: string[], customData?: any): void {
   });
 }
 
-// Special case to allow 'any'. We want to support the passing of
-// any shape with the logs.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-function logInfo(message: string, tags?: string[], customData?: any): void {
+function logInfo(message: string, customData?: any, tags?: string[]): void {
   log({
     logLevel: 'info',
     message: message,
@@ -81,10 +75,7 @@ function logInfo(message: string, tags?: string[], customData?: any): void {
   });
 }
 
-// Special case to allow 'any'. We want to support the passing of
-// any shape with the logs.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-function logWarn(message: string, tags?: string[], customData?: any): void {
+function logWarn(message: string, customData?: any, tags?: string[]): void {
   log({
     logLevel: 'warn',
     message: message,
@@ -93,15 +84,19 @@ function logWarn(message: string, tags?: string[], customData?: any): void {
   });
 }
 
-// Special case to allow 'any'. We want to support the passing of
-// any shape with the logs.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-function logError(message: string, tags?: string[], customData?: any): void {
+function logError(
+  message: string,
+  error?: Error,
+  customData?: any,
+  tags?: string[]
+): void {
   log({
     logLevel: 'error',
     message: message,
     tags: tags,
     data: customData,
+    errorMessage: error?.message,
+    errorStack: error?.stack,
   });
 }
 
@@ -110,7 +105,6 @@ export {
   coloredConsoleTransport,
   simpleConsoleTransport,
   configureLogger,
-  log,
   logDebug,
   logVerbose,
   logInfo,

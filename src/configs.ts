@@ -24,3 +24,7 @@ export function defaultConfig(): LoggerConfig {
     ],
   };
 }
+
+// export function coloredConsoleConfig(): LoggerConfig {
+//   // TODO
+// }
