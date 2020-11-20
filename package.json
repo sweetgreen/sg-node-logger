@@ -17,6 +17,7 @@
     "@semantic-release/github": "^7.1.1",
     "@semantic-release/npm": "^7.0.6",
     "@semantic-release/release-notes-generator": "^9.0.1",
+    "@types/dotenv": "^8.2.0",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
     "cz-conventional-changelog": "^3.3.0",
@@ -33,6 +34,7 @@
     "@octokit/core": "^3.2.1",
     "@types/node": "^14.14.6",
     "@types/winston": "^2.4.4",
+    "dotenv": "^8.2.0",
     "winston": "^3.3.3"
   },
   "files": [
