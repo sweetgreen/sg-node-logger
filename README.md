@@ -164,7 +164,7 @@ Details of the default configuration (for the latest configuration checkout the 
 - Pre-defined configurations will be added over time to make it dead simple to use and to keep the code clean.
 
 ```js
-import { aPredefinedConfig } from '@sweetgreen/sg-node-logger';
+import { configureLogger, aPredefinedConfig } from '@sweetgreen/sg-node-logger';
 
 // Keep the configuration close to the application's entry point
 configureLogger(aPredefinedConfig);
@@ -191,11 +191,11 @@ const myConfigs: LoggerConfig = {
         transports: [
           {
             type: Transport.SimpleConsole,
-            minimumLogLevel: LogLevel.Verbose, // Optional: defaults to LogLevel.Info
+            minimumLogLevel: LogLevel.Verbose, // Optional: defaults to Info
           },
           {
             type: Transport.AwsCloudWatch, // Coming soon
-            minimumLogLevel: LogLevel.Warn, // Optional: defaults to LogLevel.Info
+            minimumLogLevel: LogLevel.Warn, // Optional: defaults to Info
           },
         ],
       },
@@ -204,7 +204,7 @@ const myConfigs: LoggerConfig = {
         transports: [
           {
             type: Transport.SimpleConsole,
-            minimumLogLevel: LogLevel.Error, // Optional: defaults to LogLevel.Info
+            minimumLogLevel: LogLevel.Error, // Optional: defaults to Info
           },
         ],
       },

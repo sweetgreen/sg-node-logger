@@ -5,18 +5,18 @@ export function defaultConfig(): LoggerConfig {
     environments: [
       {
         nodeEnvName: Environment.Production,
-        transportConfigs: [
+        transports: [
           {
-            transportType: Transport.SimpleConsole,
+            type: Transport.SimpleConsole,
             minimumLogLevel: LogLevel.Info,
           },
         ],
       },
       {
         nodeEnvName: Environment.PreProduction,
-        transportConfigs: [
+        transports: [
           {
-            transportType: Transport.SimpleConsole,
+            type: Transport.SimpleConsole,
             minimumLogLevel: LogLevel.Info,
           },
         ],

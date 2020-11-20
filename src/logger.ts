@@ -46,8 +46,8 @@ export function configToTransports(options: LoggerConfig): winston.transport[] {
 
   const transports: winston.transport[] = [];
 
-  environments[0].transportConfigs.forEach((config) => {
-    switch (config.transportType) {
+  environments[0].transports.forEach((config) => {
+    switch (config.type) {
       case Transport.SimpleConsole:
         transports.push(simpleConsoleTransport(config.minimumLogLevel));
         break;
@@ -56,7 +56,7 @@ export function configToTransports(options: LoggerConfig): winston.transport[] {
         break;
       default:
         throw new UnknownTransportError(
-          `Transport type '${config.transportType}' has not been mapped yet`
+          `Transport type '${config.type}' has not been mapped yet`
         );
     }
   });
