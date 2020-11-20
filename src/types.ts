@@ -55,11 +55,11 @@ export interface LoggerConfig {
 
 export interface EnvironmentConfig {
   nodeEnvName: string;
-  transportConfigs: TransportConfig[];
+  transports: TransportConfig[];
 }
 
 export interface TransportConfig {
-  transportType: Transport;
+  type: Transport;
   minimumLogLevel?: LogLevel;
 }
 

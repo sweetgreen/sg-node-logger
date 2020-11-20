@@ -137,18 +137,18 @@ Details of the default configuration (for the latest configuration checkout the 
   environments: [
     {
       nodeEnvName: Environment.Production,
-      transportConfigs: [
+      transports: [
         {
-          transportType: Transport.SimpleConsole,
+          type: Transport.SimpleConsole,
           minimumLogLevel: LogLevel.Info,
         },
       ],
     },
     {
       nodeEnvName: Environment.PreProduction,
-      transportConfigs: [
+      transports: [
         {
-          transportType: Transport.SimpleConsole,
+          type: Transport.SimpleConsole,
           minimumLogLevel: LogLevel.Info,
         },
       ],
@@ -188,22 +188,22 @@ const myConfigs: LoggerConfig = {
     environments: [
       {
         nodeEnvName: 'production',
-        transportConfigs: [
+        transports: [
           {
-            transportType: Transport.SimpleConsole,
+            type: Transport.SimpleConsole,
             minimumLogLevel: LogLevel.Verbose, // Optional: defaults to LogLevel.Info
           },
           {
-            transportType: Transport.AwsCloudWatch, // Coming soon
+            type: Transport.AwsCloudWatch, // Coming soon
             minimumLogLevel: LogLevel.Warn, // Optional: defaults to LogLevel.Info
           },
         ],
       },
       {
         nodeEnvName: 'development',
-        transportConfigs: [
+        transports: [
           {
-            transportType: Transport.SimpleConsole,
+            type: Transport.SimpleConsole,
             minimumLogLevel: LogLevel.Error, // Optional: defaults to LogLevel.Info
           },
         ],
