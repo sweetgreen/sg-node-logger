@@ -3,9 +3,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types */
 import dotenv from 'dotenv';
 import winston from 'winston';
+
 import { SgLog, LoggerConfig } from './types';
 import { defaultConfig } from './configs';
-import { newLogger, configToTransports } from './logger';
+import { newLogger, convertConfigToTransports } from './logger';
 import { coloredConsoleTransport, simpleConsoleTransport } from './transports';
 
 // Init dotenv
@@ -17,7 +18,7 @@ const logger: winston.Logger = defaultLogger();
  * New instance of the logger using default transports
  */
 function defaultLogger(): winston.Logger {
-  const transports = configToTransports(defaultConfig());
+  const transports = convertConfigToTransports(defaultConfig());
 
   return newLogger(transports);
 }
@@ -28,13 +29,13 @@ function defaultLogger(): winston.Logger {
  * @param options custom options to configure the transports per environment
  */
 function configureLogger(options: LoggerConfig): void {
-  logger.transports = configToTransports(options);
+  logger.transports = convertConfigToTransports(options);
 }
 
 /**
  * Base log function
  *
- * Note: it's highly recommended to use the helper functions
+ * Note: it's highly recommended to use the helper functions:
  * logDebug, logVerbose, logInfo, logWarn, and logError
  *
  * @param log

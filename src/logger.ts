@@ -26,8 +26,10 @@ export function newLogger(transports: winston.transport[]): winston.Logger {
   });
 }
 
-export function configToTransports(options: LoggerConfig): winston.transport[] {
-  const nodeEnv: Option<string> = process.env.NODE_ENV?.toLowerCase();
+export function convertConfigToTransports(
+  options: LoggerConfig
+): winston.transport[] {
+  const nodeEnv: Option<string> = process.env.NODE_ENV?.trim().toLowerCase();
 
   if (!nodeEnv) {
     throw new MissingNodeEnvironmentError('NODE_ENV variable must be set');
@@ -35,7 +37,7 @@ export function configToTransports(options: LoggerConfig): winston.transport[] {
 
   // Find the config for the current environment
   const environments = options.environments.filter(
-    (env) => env.nodeEnvName.toLowerCase() === nodeEnv
+    (env) => env.nodeEnvName.trim().toLowerCase() === nodeEnv
   );
 
   if (environments.length === 0) {

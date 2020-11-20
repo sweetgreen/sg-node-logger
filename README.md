@@ -52,6 +52,12 @@ yarn add @sweetgreen/sg-node-logger
 npm i @sweetgreen/sg-node-logger
 ```
 
+### Environment Variables
+
+The following environment variables are used by the package:
+- `NODE_ENV`
+  - Assigns logger transports based on the environment value
+
 ## Usage
 
 ```javascript
@@ -219,6 +225,20 @@ logDebug('Debug message');
 ```
 
 - `nodeEnvName` can be any value that your application uses in its lifecycle ('prod' vs. 'production', 'dev' vs. 'develop', etc)
+
+## Development
+
+### Environemnt Variables
+
+The following environment variables are used in the project:
+- NODE_ENV
+
+Use the `.env` file for testing different environments
+```sh
+# .env file
+
+NODE_ENV=production|development|etc
+```
 
 ## Contributing
 

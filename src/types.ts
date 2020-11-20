@@ -30,8 +30,11 @@ export enum LogLevel {
 
 /**
  * This list goes hand in hand with {LogLevel}.
+ *
  * NOTE: changing the values have consequences! Make sure you know the
  * side effects before making changes.
+ *
+ * TODO: We should automate this by inferring from `LogLevel`
  */
 export const WinstonLogLevels = {
   Error: 0,
