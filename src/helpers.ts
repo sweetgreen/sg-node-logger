@@ -1,22 +1,28 @@
 import winston from 'winston';
-import { Option, LoggerConfig, Transport, WinstonLogLevels } from './types';
-import { coloredConsoleTransport, simpleConsoleTransport } from './transports';
+
+import { Option, LoggerOptions, Transport } from './types';
+import { prettyConsoleTransport, simpleConsoleTransport } from './transports';
+import { defaultConfig } from './configs';
 import {
   UnknownTransportError,
   MissingConfigurationError,
-  MissingNodeEnvironmentError,
+  MissingEnvironmentVariableError,
 } from './errors';
 
 export function newLogger(transports: winston.transport[]): winston.Logger {
+  // TODO: get values for type StaticLogMetadata
+
   return winston.createLogger({
-    level: 'info',
-    levels: WinstonLogLevels,
-    format: winston.format.json(),
+    silent: false,
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json()
+    ),
     // TODO: populate other metadata
-    // defaultMeta: {
-    //   service: 'dont-forget-to-update-default-meta',
-    //   otherKeys: 'test',
-    // },
+    defaultMeta: {
+      service: 'dont-forget-to-update-default-meta',
+      otherKeys: 'test',
+    },
     transports: transports,
     // transports: [
     //   // FIXME: confirm this is what we want with the wider engineering team; is this the right name? Is this the right location to output the log files?
@@ -26,13 +32,27 @@ export function newLogger(transports: winston.transport[]): winston.Logger {
   });
 }
 
+/**
+ * New instance of the logger using default transports
+ */
+export function defaultLogger(): winston.Logger {
+  const transports = convertConfigToTransports(defaultConfig());
+
+  return newLogger(transports);
+}
+
+/**
+ * Converts options to transports
+ *
+ * @param options the options to convert
+ */
 export function convertConfigToTransports(
-  options: LoggerConfig
+  options: LoggerOptions
 ): winston.transport[] {
   const nodeEnv: Option<string> = process.env.NODE_ENV?.trim().toLowerCase();
 
   if (!nodeEnv) {
-    throw new MissingNodeEnvironmentError('NODE_ENV variable must be set');
+    throw new MissingEnvironmentVariableError('NODE_ENV variable must be set');
   }
 
   // Find the config for the current environment
@@ -46,15 +66,24 @@ export function convertConfigToTransports(
     );
   }
 
+  const currentEnvironmentConfig = environments[0];
+
+  if (currentEnvironmentConfig.transports.length === 0) {
+    throw new MissingConfigurationError(
+      `'transports' are missing for the '${nodeEnv}' environment.`
+    );
+  }
+
   const transports: winston.transport[] = [];
 
-  environments[0].transports.forEach((config) => {
+  // Get transports
+  currentEnvironmentConfig.transports.forEach((config) => {
     switch (config.type) {
       case Transport.SimpleConsole:
         transports.push(simpleConsoleTransport(config.minimumLogLevel));
         break;
-      case Transport.ColoredConsole:
-        transports.push(coloredConsoleTransport(config.minimumLogLevel));
+      case Transport.PrettyConsole:
+        transports.push(prettyConsoleTransport(config.minimumLogLevel));
         break;
       default:
         throw new UnknownTransportError(

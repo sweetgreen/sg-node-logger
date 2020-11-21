@@ -6,16 +6,16 @@ import { LogLevel } from './types';
 /**
  * Basic console stdout
  *
- * @example INFO: <message> <everything else>
+ * @example info: testing info {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
  *
- * @param minimumLogLevel everything above this level is logged - see {LogLevel}
- * enum for more information
+ * @param minimumLogLevel all logs with this severity and above
+ * will be enabled; default is Info
  */
 export function simpleConsoleTransport(
   minimumLogLevel: LogLevel = LogLevel.Info
 ): ConsoleTransportInstance {
   return new winston.transports.Console({
-    level: minimumLogLevel.toString().toLowerCase(),
+    level: LogLevel[minimumLogLevel].toLowerCase(),
     format: winston.format.simple(),
   });
 }
@@ -23,12 +23,12 @@ export function simpleConsoleTransport(
 /**
  * Colored console stdout
  *
- * @example [LOGGER] - TODO
+ * @example [SGLOG]  2020-11-20 10:26:22.866  info : testing info
  *
- * @param minimumLogLevel everything above this level is logged - see {LogLevel}
- * enum for more information
+ * @param minimumLogLevel all logs with this severity and above
+ * will be enabled; default is Info
  */
-export function coloredConsoleTransport(
+export function prettyConsoleTransport(
   minimumLogLevel: LogLevel = LogLevel.Info
 ): ConsoleTransportInstance {
   const formatting = winston.format.combine(
@@ -36,21 +36,32 @@ export function coloredConsoleTransport(
       all: true,
     }),
     winston.format.label({
-      label: '[LOGGER]',
+      label: '[SGLOG]',
     }),
     winston.format.timestamp({
       format: 'YYYY-MM-DD hh:mm:ss.SSS',
     }),
     winston.format.printf(
       (info) =>
-        ` ${info.label}  ${info.timestamp}  ${info.level} : ${info.message} ${
-          JSON.stringify(info.logData) ?? ''
+        `${info.label}  ${info.timestamp}  ${info.level} : ${info.message} ${
+          info.data || info.tags || info.errorMessage || info.errorStack
+            ? JSON.stringify({
+                data: info.data,
+                tags: info.tags,
+                errorMessage: info.errorMessage,
+                errorStack: info.errorStack,
+              })
+            : ''
         }`
     )
   );
 
   return new winston.transports.Console({
-    level: minimumLogLevel.toString().toLowerCase(),
+    level: LogLevel[minimumLogLevel].toLowerCase(),
     format: winston.format.combine(winston.format.colorize(), formatting),
   });
 }
+
+// export function awsCloudWatchTransport(
+//   minimumLogLevel: LogLevel = LogLevel.Info
+// );

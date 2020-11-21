@@ -1,13 +1,17 @@
-import { Environment, LogLevel, Transport, LoggerConfig } from './types';
+import { Environment, LogLevel, Transport, LoggerOptions } from './types';
 
-export function defaultConfig(): LoggerConfig {
+/**
+ * Uses the PrettyConsole with Info log level across all
+ * environments
+ */
+export function defaultConfig(): LoggerOptions {
   return {
     environments: [
       {
         nodeEnvName: Environment.Production,
         transports: [
           {
-            type: Transport.SimpleConsole,
+            type: Transport.PrettyConsole,
             minimumLogLevel: LogLevel.Info,
           },
         ],
@@ -16,7 +20,7 @@ export function defaultConfig(): LoggerConfig {
         nodeEnvName: Environment.PreProduction,
         transports: [
           {
-            type: Transport.SimpleConsole,
+            type: Transport.PrettyConsole,
             minimumLogLevel: LogLevel.Info,
           },
         ],
@@ -24,7 +28,3 @@ export function defaultConfig(): LoggerConfig {
     ],
   };
 }
-
-// export function coloredConsoleConfig(): LoggerConfig {
-//   // TODO
-// }

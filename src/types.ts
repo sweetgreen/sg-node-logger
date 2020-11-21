@@ -1,7 +1,7 @@
 export type Option<T> = T | undefined;
 
 /**
- * Mainly used for default configurations
+ * Default environments
  */
 export enum Environment {
   Production = 'production',
@@ -11,48 +11,33 @@ export enum Environment {
 /**
  * List of log levels
  *
- * Note that the enum list is fed into the logger (Winston). The logger uses
- * the ordering (int values) to determine at which level to start logging.
+ * The log levels are used to determine at which level to start logging.
  * For example, if using Info as the minimum log level, every level above and
  * including Info will be logged. In other words, Info, Warn and Error logs
  * are enabled.
  *
- * NOTE: do not change the enum value unless the side effects are clearly
- * understood
+ * NOTE: this enum goes hand in hand with winston log levels found here
+ * https://www.npmjs.com/package/winston#logging-levels. If changing, make
+ * sure the values (string and int) match.
+ * Do not change the enum unless the side effects are clearly understood.
  */
 export enum LogLevel {
   Error = 0,
   Warn = 1,
   Info = 2,
-  Verbose = 3,
-  Debug = 4,
+  Verbose = 4,
+  Debug = 5,
 }
-
-/**
- * This list goes hand in hand with {LogLevel}.
- *
- * NOTE: changing the values have consequences! Make sure you know the
- * side effects before making changes.
- *
- * TODO: We should automate this by inferring from `LogLevel`
- */
-export const WinstonLogLevels = {
-  Error: 0,
-  Warn: 1,
-  Info: 2,
-  Verbose: 3,
-  Debug: 4,
-};
 
 /**
  * List of transports
  */
 export enum Transport {
   SimpleConsole,
-  ColoredConsole,
+  PrettyConsole,
 }
 
-export interface LoggerConfig {
+export interface LoggerOptions {
   environments: EnvironmentConfig[];
 }
 
@@ -67,10 +52,10 @@ export interface TransportConfig {
 }
 
 /**
- * Log interface
+ * User defined log entry
  */
-export interface SgLog {
-  logLevel: string;
+export interface LogEntry {
+  logLevel: LogLevel;
   message: string;
   tags?: string[];
   /** Any custom data - WARNING: DO NOT LOG PII */
@@ -78,12 +63,21 @@ export interface SgLog {
   data?: any;
   errorMessage?: string;
   errorStack?: string;
-  // NOTE: below fields are (or will be) automatically filled
-  // by this package
+}
+
+/**
+ * Log metadata that is set dynamically for each log
+ */
+export interface DynamicLogMetadata {
   utcTimestamp?: string;
-  localTimestamp?: string;
   sessionId?: string;
-  requestId?: string;
+  correlationId?: string;
+}
+
+/**
+ * Log metadata that is set once on application start up
+ */
+export interface StaticLogMetadata {
   appName?: string;
   appVersion?: string;
   environment?: string;
@@ -93,3 +87,8 @@ export interface SgLog {
   osVersion?: string;
   osBuildNumber?: string;
 }
+
+export interface SgLog
+  extends LogEntry,
+    DynamicLogMetadata,
+    StaticLogMetadata {}

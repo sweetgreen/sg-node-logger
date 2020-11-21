@@ -16,7 +16,7 @@ export class MissingConfigurationError extends SgNodeLoggerError {
   }
 }
 
-export class MissingNodeEnvironmentError extends SgNodeLoggerError {
+export class MissingEnvironmentVariableError extends SgNodeLoggerError {
   constructor(message?: string) {
     super(message);
   }

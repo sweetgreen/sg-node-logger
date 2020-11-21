@@ -4,31 +4,26 @@
 import dotenv from 'dotenv';
 import winston from 'winston';
 
-import { SgLog, LoggerConfig } from './types';
-import { defaultConfig } from './configs';
-import { newLogger, convertConfigToTransports } from './logger';
-import { coloredConsoleTransport, simpleConsoleTransport } from './transports';
+import { DynamicLogMetadata, LogEntry, LoggerOptions, LogLevel } from './types';
+import { defaultLogger, convertConfigToTransports } from './helpers';
+import { prettyConsoleTransport, simpleConsoleTransport } from './transports';
 
 // Init dotenv
 dotenv.config();
 
+/**
+ * Logger object initialized with default transports,
+ * unless they are overwritten by configureLoggeer()
+ */
 const logger: winston.Logger = defaultLogger();
 
 /**
- * New instance of the logger using default transports
- */
-function defaultLogger(): winston.Logger {
-  const transports = convertConfigToTransports(defaultConfig());
-
-  return newLogger(transports);
-}
-
-/**
- * Updates the logger transports based on the options/configuration
+ * Overwrites logger configuration (transports, etc)
  *
- * @param options custom options to configure the transports per environment
+ * @param options custom options to configure the transports
+ * per environment
  */
-function configureLogger(options: LoggerConfig): void {
+function configureLogger(options: LoggerOptions): void {
   logger.transports = convertConfigToTransports(options);
 }
 
@@ -38,29 +33,35 @@ function configureLogger(options: LoggerConfig): void {
  * Note: it's highly recommended to use the helper functions:
  * logDebug, logVerbose, logInfo, logWarn, and logError
  *
- * @param log
+ * @param log log object
  */
-function log(log: SgLog): void {
-  // Clean up
-  log.data = log.data ?? {};
+function log(log: LogEntry): void {
+  // TODO:
+  // const metadata: DynamicLogMetadata = {
+  //   utcTimestamp: new Date().toISOString(),
+  //   sessionId: 'uuid',
+  //   correlationId: 'uuid',
+  // };
 
   const { logLevel, message, ...otherFields } = log;
 
-  logger.log(logLevel, message, otherFields);
+  const level: string = LogLevel[logLevel].toLowerCase();
+
+  logger.log(level, message, otherFields);
 }
 
 function logDebug(message: string, customData?: any, tags?: string[]): void {
   log({
-    logLevel: 'debug',
+    logLevel: LogLevel.Debug,
     message: message,
     tags: tags,
-    data: customData ?? {},
+    data: customData,
   });
 }
 
 function logVerbose(message: string, customData?: any, tags?: string[]): void {
   log({
-    logLevel: 'verbose',
+    logLevel: LogLevel.Verbose,
     message: message,
     tags: tags,
     data: customData,
@@ -69,7 +70,7 @@ function logVerbose(message: string, customData?: any, tags?: string[]): void {
 
 function logInfo(message: string, customData?: any, tags?: string[]): void {
   log({
-    logLevel: 'info',
+    logLevel: LogLevel.Info,
     message: message,
     tags: tags,
     data: customData,
@@ -78,7 +79,7 @@ function logInfo(message: string, customData?: any, tags?: string[]): void {
 
 function logWarn(message: string, customData?: any, tags?: string[]): void {
   log({
-    logLevel: 'warn',
+    logLevel: LogLevel.Warn,
     message: message,
     tags: tags,
     data: customData,
@@ -92,7 +93,7 @@ function logError(
   tags?: string[]
 ): void {
   log({
-    logLevel: 'error',
+    logLevel: LogLevel.Error,
     message: message,
     tags: tags,
     data: customData,
@@ -101,11 +102,21 @@ function logError(
   });
 }
 
+// Test Only
+// logDebug('testing debug');
+// logVerbose('testing verbose');
+// logInfo('testing info', { a: 'jfkkjflsd', b: 137843 });
+// logWarn('testing warn', undefined, ['tag1', 'tag2']);
+// logError('testing error');
+
 export {
-  LoggerConfig,
-  coloredConsoleTransport,
-  simpleConsoleTransport,
+  LoggerOptions,
   configureLogger,
+  // transports
+  prettyConsoleTransport,
+  simpleConsoleTransport,
+  // pre-defined configs
+  // helper functions
   logDebug,
   logVerbose,
   logInfo,

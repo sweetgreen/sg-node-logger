@@ -44,6 +44,7 @@
     "yarn.lock"
   ],
   "scripts": {
+    "start": "npx tsc && node -r dotenv/config lib/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",

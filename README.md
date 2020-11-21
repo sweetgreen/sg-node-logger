@@ -23,6 +23,12 @@
   - No more guessing what the logs look like
   - Simplifies log querying across the board (in Data Dog, for example)
 
+## Warning
+
+> **We cannot stress this enough. Do NOT log PII or any sensitive information.**
+>
+> **For any questions, contact our friendly cyber-security team.**
+
 ## Getting Started
 
 ### Prerequisites
@@ -104,7 +110,7 @@ const customData = {
 logDebug('Debug message', customData);
 ```
 
-#### Tagging
+#### Tagging (highly recommended)
 
 ```js
 import { logDebug } from '@sweetgreen/sg-node-logger';
@@ -182,14 +188,14 @@ logDebug('Debug message');
 
 ```js
 import {
-  LoggerConfig,
+  LoggerOptions,
   Transport,
   LogLevel,
   configureLogger,
   logDebug,
 } from '@sweetgreen/sg-node-logger';
 
-const myConfigs: LoggerConfig = {
+const myConfigs: LoggerOptions = {
   {
     environments: [
       {
@@ -226,6 +232,26 @@ logDebug('Debug message');
 
 - `nodeEnvName` can be any value that your application uses in its lifecycle ('prod' vs. 'production', 'dev' vs. 'develop', etc)
 
+## Transports
+
+### Simple
+
+```
+# Sample logs
+info: testing info {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
+warn: testing warn {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
+error: testing error {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
+```
+
+### Colored
+
+```
+# Sample logs
+[SGLOG]  2020-11-20 10:26:22.866  info : testing info
+[SGLOG]  2020-11-20 10:26:22.872  warn : testing warn 
+[SGLOG]  2020-11-20 10:26:22.872  error : testing error
+```
+
 ## Development
 
 ### Environemnt Variables
@@ -237,6 +263,7 @@ Use the `.env` file for testing different environments
 ```sh
 # .env file
 
+# Reference the Environment enum for correct values
 NODE_ENV=production|development|etc
 ```
 
