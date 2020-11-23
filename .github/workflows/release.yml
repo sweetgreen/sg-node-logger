@@ -28,7 +28,8 @@ jobs:
       - name: Semantic Release
         id: semantic
         uses: cycjimmy/semantic-release-action@v2
-        with: |
+        with:
+          branches: |
             [
               '+([0-9])?(.{+([0-9]),x}).x',
               'main',
