@@ -4,7 +4,7 @@
 import dotenv from 'dotenv';
 import winston from 'winston';
 
-import { DynamicLogMetadata, LogEntry, LoggerOptions, LogLevel } from './types';
+import { LogEntry, LoggerOptions, LogLevel } from './types';
 import { defaultLogger, convertConfigToTransports } from './helpers';
 import { prettyConsoleTransport, simpleConsoleTransport } from './transports';
 
