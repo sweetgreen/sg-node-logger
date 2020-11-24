@@ -1,3 +1,13 @@
+# [1.4.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.3.0...v1.4.0) (2020-11-24)
+
+
+### Features
+
+* **configurable transports:** added basic configurations and transports ([dbdbf8c](https://github.com/sweetgreen/sg-node-logger/commit/dbdbf8c4e2c715053d3aa69a957b7cca58c0e46b))
+* **git action:** git action ([d84d302](https://github.com/sweetgreen/sg-node-logger/commit/d84d30240dc1d5ddca38da1f06d1be31ea1809c8))
+* **git workflow:** updated git action workflow to use main branch instead of master ([712e23d](https://github.com/sweetgreen/sg-node-logger/commit/712e23da08d7a369547dd8d5e99f0784cf3bf93e))
+* **index:** empty commit to trigger another build ([a69ebbf](https://github.com/sweetgreen/sg-node-logger/commit/a69ebbf5d448d4358a9c1aaa8eb0bf9fcd1df35e))
+
 # [1.3.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.2.0...v1.3.0) (2020-11-18)
 
 
