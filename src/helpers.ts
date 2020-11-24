@@ -1,6 +1,6 @@
 import winston from 'winston';
 
-import { Option, LoggerOptions, Transport } from './types';
+import { Option, EnvironmentConfig, Transport } from './types';
 import { prettyConsoleTransport, simpleConsoleTransport } from './transports';
 import { defaultConfig } from './configs';
 import {
@@ -44,10 +44,10 @@ export function defaultLogger(): winston.Logger {
 /**
  * Converts options to transports
  *
- * @param options the options to convert
+ * @param environmentConfigs the options to convert
  */
 export function convertConfigToTransports(
-  options: LoggerOptions
+  environmentConfigs: EnvironmentConfig[]
 ): winston.transport[] {
   const nodeEnv: Option<string> = process.env.NODE_ENV?.trim().toLowerCase();
 
@@ -56,7 +56,7 @@ export function convertConfigToTransports(
   }
 
   // Find the config for the current environment
-  const environments = options.environments.filter(
+  const environments = environmentConfigs.filter(
     (env) => env.nodeEnvName.trim().toLowerCase() === nodeEnv
   );
 

@@ -24,7 +24,7 @@ const logger: winston.Logger = defaultLogger();
  * per environment
  */
 function configureLogger(options: LoggerOptions): void {
-  logger.transports = convertConfigToTransports(options);
+  logger.transports = convertConfigToTransports(options.environments);
 }
 
 /**
