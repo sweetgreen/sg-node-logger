@@ -151,7 +151,7 @@ Details of the default configuration (for the latest configuration checkout the 
       nodeEnvName: Environment.Production,
       transports: [
         {
-          type: Transport.SimpleConsole,
+          type: Transport.PrettyConsole,
           minimumLogLevel: LogLevel.Info,
         },
       ],
@@ -160,7 +160,7 @@ Details of the default configuration (for the latest configuration checkout the 
       nodeEnvName: Environment.PreProduction,
       transports: [
         {
-          type: Transport.SimpleConsole,
+          type: Transport.PrettyConsole,
           minimumLogLevel: LogLevel.Info,
         },
       ],
@@ -173,10 +173,10 @@ Details of the default configuration (for the latest configuration checkout the 
 
 #### Pre-Defined Configurations
 
-- Pre-defined configurations will be added over time to make it dead simple to use and to keep the code clean.
+- Pre-defined configurations will be added over time to make it as simple as possible to use and to keep the code clean and clear from file based configuration.
 
 ```js
-import { configureLogger, aPredefinedConfig } from '@sweetgreen/sg-node-logger';
+import { configureLogger, aPredefinedConfig, logDebug } from '@sweetgreen/sg-node-logger';
 
 // Keep the configuration close to the application's entry point
 configureLogger(aPredefinedConfig);
@@ -202,7 +202,7 @@ const myConfigs: LoggerOptions = {
         nodeEnvName: 'production',
         transports: [
           {
-            type: Transport.SimpleConsole,
+            type: Transport.PrettyConsole,
             minimumLogLevel: LogLevel.Verbose, // Optional: defaults to Info
           },
           {
