@@ -13,7 +13,8 @@
   - Option 2: PII tagging system (field/object) to automatically remove sensitive information from logs
 - Config files that can be used by consumers to automatically configure logger to fit needs (i.e. using this logger in a raspberry pi env vs in ECS)
 - File/env-var based logger on/off switch
-  - Useful when logs are not needed when running unit tests
+  - Useful when logs are not needed (ie, unit tests)
+- AWS CloudWatch - auto manage rate-limiting (this may go away with the introduction of the DataDog transport)
 
 ## Vision 
 
@@ -68,11 +69,15 @@ The following environment variables are used by the package:
 
 ```javascript
 // CommonJS
-const { logDebug } = require('@sweetgreen/sg-node-logger');
+const { logDebug, initLogger } = require('@sweetgreen/sg-node-logger');
 
 // ES6
-import { logDebug } from '@sweetgreen/sg-node-logger';
+import { logDebug, initLogger } from '@sweetgreen/sg-node-logger';
 
+// Initialize logger
+initLogger();
+
+// Log away
 logDebug('Debug message');
 ```
 
@@ -82,12 +87,15 @@ logDebug('Debug message');
 
 ```js
 import {
+  initLogger,
   logDebug,
   logVerbose,
   logInfo,
   logWarn,
   logError
 } from '@sweetgreen/sg-node-logger';
+
+initLogger();
 
 logDebug('Debug message');
 logVerbose('Verbose message');
@@ -99,7 +107,9 @@ logError('Error message');
 #### Logging Custom Data
 
 ```js
-import { logDebug } from '@sweetgreen/sg-node-logger';
+import { initLogger, logDebug } from '@sweetgreen/sg-node-logger';
+
+initLogger();
 
 // WARNING: it's your responsibility to remove all PII
 const customData = {
@@ -113,7 +123,9 @@ logDebug('Debug message', customData);
 #### Tagging (highly recommended)
 
 ```js
-import { logDebug } from '@sweetgreen/sg-node-logger';
+import { initLogger, logDebug } from '@sweetgreen/sg-node-logger';
+
+initLogger();
 
 const tags: string[] = ['main-feature-name', 'sub-feature-name'];
 
@@ -123,7 +135,9 @@ logDebug('Debug message', undefined, tags);
 #### Error
 
 ```js
-import { logError } from '@sweetgreen/sg-node-logger';
+import { initLogger, logError } from '@sweetgreen/sg-node-logger';
+
+initLogger();
 
 try {
   // CODE ...
@@ -138,7 +152,9 @@ try {
 
 This code is using the default configuration under the hood
 ```js
-import { logDebug } from '@sweetgreen/sg-node-logger';
+import { initLogger, logDebug } from '@sweetgreen/sg-node-logger';
+
+initLogger();
 
 logDebug('Debug message');
 ```
@@ -171,15 +187,15 @@ Details of the default configuration (for the latest configuration checkout the 
 
 - Note that "production" and "preproduction" NODE_ENV values will be used if using the default configuration. Ensure to adjust your NODE_ENV environment values accordingly.
 
-#### Pre-Defined Configurations
+#### Pre-Defined Configurations (future plan)
 
 - Pre-defined configurations will be added over time to make it as simple as possible to use and to keep the code clean and clear from file based configuration.
 
 ```js
-import { configureLogger, aPredefinedConfig, logDebug } from '@sweetgreen/sg-node-logger';
+import { initLogger, aPredefinedConfig, logDebug } from '@sweetgreen/sg-node-logger';
 
 // Keep the configuration close to the application's entry point
-configureLogger(aPredefinedConfig);
+initLogger(aPredefinedConfig);
 
 logDebug('Debug message');
 ```
@@ -191,15 +207,15 @@ import {
   LoggerOptions,
   Transport,
   LogLevel,
-  configureLogger,
+  initLogger,
   logDebug,
 } from '@sweetgreen/sg-node-logger';
 
-const myConfigs: LoggerOptions = {
+const loggerOptions: LoggerOptions = {
   {
     environments: [
       {
-        nodeEnvName: 'production',
+        nodeEnvironmentName: 'production',
         transports: [
           {
             type: Transport.PrettyConsole,
@@ -212,7 +228,7 @@ const myConfigs: LoggerOptions = {
         ],
       },
       {
-        nodeEnvName: 'development',
+        nodeEnvironmentName: 'development',
         transports: [
           {
             type: Transport.SimpleConsole,
@@ -225,16 +241,16 @@ const myConfigs: LoggerOptions = {
 }
 
 // Keep the configuration close to the application's entry point
-configureLogger(myConfigs);
+initLogger(loggerOptions);
 
 logDebug('Debug message');
 ```
 
-- `nodeEnvName` can be any value that your application uses in its lifecycle ('prod' vs. 'production', 'dev' vs. 'develop', etc)
+- `nodeEnvironmentName` can be any value that your application uses in its lifecycle ('prod' vs. 'production', 'dev' vs. 'develop', etc) when using the custom configuration (not available in default or pre-defined configurations).
 
 ## Transports
 
-### Simple
+### SimpleConsole
 
 ```
 # Sample logs
@@ -243,7 +259,7 @@ warn: testing warn {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
 error: testing error {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
 ```
 
-### Colored
+### PrettyConsole
 
 ```
 # Sample logs
@@ -251,6 +267,90 @@ error: testing error {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
 [SGLOG]  2020-11-20 10:26:22.872  warn : testing warn 
 [SGLOG]  2020-11-20 10:26:22.872  error : testing error
 ```
+
+### AwsCloudwatch
+
+Example custom configuration,
+```ts
+import {
+  AwsCloudwatchTransportConfig,
+  LoggerOptions,
+  Transport,
+  LogLevel,
+  initLogger,
+  logDebug,
+} from '@sweetgreen/sg-node-logger';
+
+const loggerOptions: LoggerOptions = {
+  {
+    environments: [
+      {
+        nodeEnvironmentName: 'production',
+        transports: [
+          {
+            type: Transport.AwsCloudwatch,
+            
+            // Optional: defaults to Info
+            minimumLogLevel: LogLevel.Info,
+            
+            awsRegion: 'us-east-1',
+
+            logGroupName: '/HelloWorldService/Production',
+
+            // Optional: auto assigned from package.json if empty
+            applicationName: 'hello-world-service',
+
+            // Optional: used when accessKeyId and secretAccessKey are
+            // available. Otherwise, uses the '~/.aws/credentials' file.
+            accessKeyId: '<aws-access-key-id>',
+            secretAccessKey: '<aws-secret-access-key>',
+
+            // Optional: defaults to 5000 (5 secs)
+            uploadRateInMilliseconds: 10000,
+
+            // Optional: defaults to 180 days
+            retentionInDays: 180,
+          } as AwsCloudwatchTransportConfig,
+        ],
+      },
+      {
+        nodeEnvironmentName: 'development',
+        transports: [
+          {
+            type: Transport.PrettyConsole,
+            minimumLogLevel: LogLevel.Error, // Optional: defaults to Info
+          },
+        ],
+      },
+    ],
+  };
+}
+
+// Keep the configuration close to the application's entry point (index.ts)
+initLogger(loggerOptions);
+
+logDebug('Debug message');
+```
+
+- Credentials. There are two options:
+  - Option 1: read from `~/.aws/credentials`. The logger automatically picks up the credentials from this file. It is the default behavior when using the simple config.
+  - Option 2: access key and secret key can be passed to the transport, though manual configuration is required.
+- Best Practices
+  - `uploadRateInMilliseconds` (must be between 200 and 60000 or 0.2 secs and 60 seconds)
+    - Rate Limiting
+      - CW Log groups have quotas and rate limits. Make sure it's well understood when deciding this value
+        - Currently, CW log streams are limited to 5 requests per second -> 200 milliseconds.
+        - [PutLogEvents](https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutLogEvents.html)
+        - [CloudWatch Service Quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_limits.html)
+    - Values - recommendations
+      - Default value is `5000` - 5 seconds
+      - In general, we don't need sub-second updates. However, the number of instances expected to run multiplied by 200 should give you a good value to use for applications that need the immediate feedback. For example,
+        - Use `200`, if there will be a single instance running your application/service.
+        - Use `1000`, if there will be 5 instances running your application.
+        - Another strategy is to use multiple log streams to avoid rate-limiting.
+    - There are other limitations/quotas. Ensure to go over them especially for highly trafficked services.
+  - `retentionInDays` (must be between 15 days and 180 days)
+    - Default is `150` days
 
 ## Development
 

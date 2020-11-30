@@ -35,6 +35,7 @@ export enum LogLevel {
 export enum Transport {
   SimpleConsole,
   PrettyConsole,
+  AwsCloudwatch,
 }
 
 export interface LoggerOptions {
@@ -42,13 +43,23 @@ export interface LoggerOptions {
 }
 
 export interface EnvironmentConfig {
-  nodeEnvName: string;
+  nodeEnvironmentName: string;
   transports: TransportConfig[];
 }
 
 export interface TransportConfig {
   type: Transport;
   minimumLogLevel?: LogLevel;
+}
+
+export interface AwsCloudwatchTransportConfig extends TransportConfig {
+  awsRegion: string;
+  logGroupName: string;
+  applicationName?: string;
+  accessKeyId?: string;
+  secretAccessKey?: string;
+  uploadRateInMilliseconds?: number;
+  retentionInDays?: number;
 }
 
 /**
@@ -88,6 +99,7 @@ export interface StaticLogMetadata {
   osBuildNumber?: string;
 }
 
+/** Shape of the full log */
 export interface SgLog
   extends LogEntry,
     DynamicLogMetadata,

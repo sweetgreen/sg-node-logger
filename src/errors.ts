@@ -21,3 +21,9 @@ export class MissingEnvironmentVariableError extends SgNodeLoggerError {
     super(message);
   }
 }
+
+export class InvalidParameterError extends SgNodeLoggerError {
+  constructor(message?: string) {
+    super(message);
+  }
+}
