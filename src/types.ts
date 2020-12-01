@@ -1,11 +1,24 @@
 export type Option<T> = T | undefined;
 
+//
+// ENUM
+//
+
 /**
- * Default environments
+ * Default environments and meant to be used internally in this module.
  */
 export enum Environment {
   Production = 'production',
-  PreProduction = 'preproduction',
+  Development = 'development',
+}
+
+/**
+ * List of transports
+ */
+export enum Transport {
+  SimpleConsole,
+  PrettyConsole,
+  AwsCloudWatch,
 }
 
 /**
@@ -29,17 +42,12 @@ export enum LogLevel {
   Debug = 5,
 }
 
-/**
- * List of transports
- */
-export enum Transport {
-  SimpleConsole,
-  PrettyConsole,
-  AwsCloudwatch,
-}
+//
+// CONFIG
+//
 
 export interface LoggerOptions {
-  environments: EnvironmentConfig[];
+  environments?: EnvironmentConfig[];
 }
 
 export interface EnvironmentConfig {
@@ -52,15 +60,22 @@ export interface TransportConfig {
   minimumLogLevel?: LogLevel;
 }
 
+export interface SimpleConsoleTransportConfig extends TransportConfig {}
+
+export interface PrettyConsoleTransportConfig extends TransportConfig {}
+
 export interface AwsCloudwatchTransportConfig extends TransportConfig {
   awsRegion: string;
   logGroupName: string;
-  applicationName?: string;
   accessKeyId?: string;
   secretAccessKey?: string;
   uploadRateInMilliseconds?: number;
   retentionInDays?: number;
 }
+
+//
+// LOG
+//
 
 /**
  * User defined log entry
@@ -83,6 +98,7 @@ export interface DynamicLogMetadata {
   utcTimestamp?: string;
   sessionId?: string;
   correlationId?: string;
+  requestId?: string;
 }
 
 /**

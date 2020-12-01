@@ -1,19 +1,50 @@
 import {
   Environment,
   LogLevel,
-  Transport,
   EnvironmentConfig,
-  AwsCloudwatchTransportConfig,
+  PrettyConsoleTransportConfig,
+  SimpleConsoleTransportConfig,
+  Transport,
 } from './types';
 
 /**
- * Default predefined configuration
+ * Predefined configuration using simple consoles in all environments
  *
  * Setup
  * - Production: PrettyConsole - Info
  * - PreProduction: PrettyConsole - Info
  */
-export function defaultConfig(): EnvironmentConfig[] {
+export function simpleConsoleConfig(): EnvironmentConfig[] {
+  return [
+    {
+      nodeEnvironmentName: Environment.Production,
+      transports: [
+        {
+          type: Transport.SimpleConsole,
+          minimumLogLevel: LogLevel.Info,
+        } as SimpleConsoleTransportConfig,
+      ],
+    },
+    {
+      nodeEnvironmentName: Environment.Development,
+      transports: [
+        {
+          type: Transport.SimpleConsole,
+          minimumLogLevel: LogLevel.Info,
+        } as SimpleConsoleTransportConfig,
+      ],
+    },
+  ];
+}
+
+/**
+ * Predefined configuration using pretty consoles in all environments
+ *
+ * Setup
+ * - Production: PrettyConsole - Info
+ * - PreProduction: PrettyConsole - Info
+ */
+export function prettyConsoleConfig(): EnvironmentConfig[] {
   return [
     {
       nodeEnvironmentName: Environment.Production,
@@ -21,16 +52,16 @@ export function defaultConfig(): EnvironmentConfig[] {
         {
           type: Transport.PrettyConsole,
           minimumLogLevel: LogLevel.Info,
-        },
+        } as PrettyConsoleTransportConfig,
       ],
     },
     {
-      nodeEnvironmentName: Environment.PreProduction,
+      nodeEnvironmentName: Environment.Development,
       transports: [
         {
           type: Transport.PrettyConsole,
           minimumLogLevel: LogLevel.Info,
-        },
+        } as PrettyConsoleTransportConfig,
       ],
     },
   ];
@@ -49,7 +80,7 @@ export function defaultConfig(): EnvironmentConfig[] {
 //       nodeEnvironmentName: Environment.Production,
 //       transports: [
 //         {
-//           type: Transport.AwsCloudwatch,
+//           type: Transport.AwsCloudWatch,
 //           minimumLogLevel: LogLevel.Info,
 //           awsRegion: '',
 //           logGroupName: '',
@@ -62,12 +93,11 @@ export function defaultConfig(): EnvironmentConfig[] {
 //       ],
 //     },
 //     {
-//       nodeEnvironmentName: Environment.PreProduction,
+//       nodeEnvironmentName: Environment.Development,
 //       transports: [
 //         {
-//           type: Transport.PrettyConsole,
 //           minimumLogLevel: LogLevel.Info,
-//         },
+//         } as PrettyConsoleConfig,
 //       ],
 //     },
 //   ];

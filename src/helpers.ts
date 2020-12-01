@@ -2,8 +2,8 @@ import winston from 'winston';
 
 import {
   Option,
-  EnvironmentConfig,
   Transport,
+  EnvironmentConfig,
   StaticLogMetadata,
   AwsCloudwatchTransportConfig,
 } from './types';
@@ -12,17 +12,20 @@ import {
   prettyConsoleTransport,
   simpleConsoleTransport,
 } from './transports';
-import { defaultConfig } from './configs';
+import { prettyConsoleConfig } from './configs';
 import {
   UnknownTransportError,
   MissingConfigurationError,
   MissingEnvironmentVariableError,
 } from './errors';
 
-export function newLogger(transports: winston.transport[]): winston.Logger {
-  // TODO: get the rest of the static values
+export function newLogger(
+  appName: string,
+  transports: winston.transport[]
+): winston.Logger {
   const staticLogMetadata: StaticLogMetadata = {
     environment: process.env.NODE_ENV,
+    appName: appName,
   };
 
   return winston.createLogger({
@@ -39,18 +42,19 @@ export function newLogger(transports: winston.transport[]): winston.Logger {
 /**
  * New instance of the logger using default transports
  */
-export function defaultLogger(): winston.Logger {
-  const transports = convertConfigToTransports(defaultConfig());
+export function defaultLogger(appName: string): winston.Logger {
+  const transports = getTransports(appName, prettyConsoleConfig());
 
-  return newLogger(transports);
+  return newLogger(appName, transports);
 }
 
 /**
- * Converts options to transports
+ * Converts transport configurations to concrete transports
  *
  * @param environmentConfigs the options to convert
  */
-export function convertConfigToTransports(
+export function getTransports(
+  appName: string,
   environmentConfigs: EnvironmentConfig[]
 ): winston.transport[] {
   const nodeEnv: Option<string> = process.env.NODE_ENV?.trim().toLowerCase();
@@ -89,14 +93,14 @@ export function convertConfigToTransports(
       case Transport.PrettyConsole:
         transports.push(prettyConsoleTransport(config.minimumLogLevel));
         break;
-      case Transport.AwsCloudwatch:
+      case Transport.AwsCloudWatch:
         const cloudwatchConfig = config as AwsCloudwatchTransportConfig;
         transports.push(
           awsCloudWatchTransport({
             minimumLogLevel: cloudwatchConfig.minimumLogLevel,
             awsRegion: cloudwatchConfig.awsRegion,
             logGroupName: cloudwatchConfig.logGroupName,
-            applicationName: cloudwatchConfig.applicationName,
+            applicationName: appName,
             accessKeyId: cloudwatchConfig.accessKeyId,
             secretAccessKey: cloudwatchConfig.secretAccessKey,
             uploadRateInMilliseconds: cloudwatchConfig.uploadRateInMilliseconds,

@@ -75,7 +75,7 @@ const { logDebug, initLogger } = require('@sweetgreen/sg-node-logger');
 import { logDebug, initLogger } from '@sweetgreen/sg-node-logger';
 
 // Initialize logger
-initLogger();
+initLogger('application-name');
 
 // Log away
 logDebug('Debug message');
@@ -95,7 +95,7 @@ import {
   logError
 } from '@sweetgreen/sg-node-logger';
 
-initLogger();
+initLogger('application-name');
 
 logDebug('Debug message');
 logVerbose('Verbose message');
@@ -109,7 +109,7 @@ logError('Error message');
 ```js
 import { initLogger, logDebug } from '@sweetgreen/sg-node-logger';
 
-initLogger();
+initLogger('application-name');
 
 // WARNING: it's your responsibility to remove all PII
 const customData = {
@@ -125,7 +125,7 @@ logDebug('Debug message', customData);
 ```js
 import { initLogger, logDebug } from '@sweetgreen/sg-node-logger';
 
-initLogger();
+initLogger('application-name');
 
 const tags: string[] = ['main-feature-name', 'sub-feature-name'];
 
@@ -137,7 +137,7 @@ logDebug('Debug message', undefined, tags);
 ```js
 import { initLogger, logError } from '@sweetgreen/sg-node-logger';
 
-initLogger();
+initLogger('application-name');
 
 try {
   // CODE ...
@@ -154,7 +154,7 @@ This code is using the default configuration under the hood
 ```js
 import { initLogger, logDebug } from '@sweetgreen/sg-node-logger';
 
-initLogger();
+initLogger('application-name');
 
 logDebug('Debug message');
 ```
@@ -169,7 +169,7 @@ Details of the default configuration (for the latest configuration checkout the 
         {
           type: Transport.PrettyConsole,
           minimumLogLevel: LogLevel.Info,
-        },
+        } as PrettyConsoleTransportConfig,
       ],
     },
     {
@@ -178,7 +178,7 @@ Details of the default configuration (for the latest configuration checkout the 
         {
           type: Transport.PrettyConsole,
           minimumLogLevel: LogLevel.Info,
-        },
+        } as PrettyConsoleTransportConfig,
       ],
     },
   ],
@@ -195,7 +195,7 @@ Details of the default configuration (for the latest configuration checkout the 
 import { initLogger, aPredefinedConfig, logDebug } from '@sweetgreen/sg-node-logger';
 
 // Keep the configuration close to the application's entry point
-initLogger(aPredefinedConfig);
+initLogger('application-name', aPredefinedConfig);
 
 logDebug('Debug message');
 ```
@@ -205,6 +205,9 @@ logDebug('Debug message');
 ```js
 import {
   LoggerOptions,
+  SimpleConsoleTransportConfig,
+  PrettyConsoleTransportConfig,
+  AwsCloudWatchTransportConfig,
   Transport,
   LogLevel,
   initLogger,
@@ -220,11 +223,11 @@ const loggerOptions: LoggerOptions = {
           {
             type: Transport.PrettyConsole,
             minimumLogLevel: LogLevel.Verbose, // Optional: defaults to Info
-          },
+          } as PrettyConsoleTransportConfig,
           {
             type: Transport.AwsCloudWatch, // Coming soon
             minimumLogLevel: LogLevel.Warn, // Optional: defaults to Info
-          },
+          } as AwsCloudWatchTransportConfig,
         ],
       },
       {
@@ -233,7 +236,7 @@ const loggerOptions: LoggerOptions = {
           {
             type: Transport.SimpleConsole,
             minimumLogLevel: LogLevel.Error, // Optional: defaults to Info
-          },
+          } as SimpleConsoleTransportConfig,
         ],
       },
     ],
@@ -241,7 +244,7 @@ const loggerOptions: LoggerOptions = {
 }
 
 // Keep the configuration close to the application's entry point
-initLogger(loggerOptions);
+initLogger('application-name', loggerOptions);
 
 logDebug('Debug message');
 ```
@@ -261,19 +264,15 @@ error: testing error {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
 
 ### PrettyConsole
 
-```
-# Sample logs
-[SGLOG]  2020-11-20 10:26:22.866  info : testing info
-[SGLOG]  2020-11-20 10:26:22.872  warn : testing warn 
-[SGLOG]  2020-11-20 10:26:22.872  error : testing error
-```
+![PrettyConsole](/assets/pretty-transport-1.png)
 
 ### AwsCloudwatch
 
-Example custom configuration,
+Example full custom configuration - typical,
 ```ts
 import {
   AwsCloudwatchTransportConfig,
+  PrettyConsoleTransportConfig,
   LoggerOptions,
   Transport,
   LogLevel,
@@ -288,8 +287,8 @@ const loggerOptions: LoggerOptions = {
         nodeEnvironmentName: 'production',
         transports: [
           {
-            type: Transport.AwsCloudwatch,
-            
+            type: Transport.AwsCloudWatch,
+
             // Optional: defaults to Info
             minimumLogLevel: LogLevel.Info,
             
@@ -297,11 +296,9 @@ const loggerOptions: LoggerOptions = {
 
             logGroupName: '/HelloWorldService/Production',
 
-            // Optional: auto assigned from package.json if empty
-            applicationName: 'hello-world-service',
-
-            // Optional: used when accessKeyId and secretAccessKey are
-            // available. Otherwise, uses the '~/.aws/credentials' file.
+            // Optional: both access and secret must be passed, otherwise 
+            // it throws an error.
+            // Make sure both are empty/undefined to use the '~/.aws/credentials' file.
             accessKeyId: '<aws-access-key-id>',
             secretAccessKey: '<aws-secret-access-key>',
 
@@ -309,7 +306,7 @@ const loggerOptions: LoggerOptions = {
             uploadRateInMilliseconds: 10000,
 
             // Optional: defaults to 180 days
-            retentionInDays: 180,
+            retentionInDays: 30,
           } as AwsCloudwatchTransportConfig,
         ],
       },
@@ -319,7 +316,7 @@ const loggerOptions: LoggerOptions = {
           {
             type: Transport.PrettyConsole,
             minimumLogLevel: LogLevel.Error, // Optional: defaults to Info
-          },
+          } as PrettyConsoleTransportConfig,
         ],
       },
     ],
@@ -327,14 +324,64 @@ const loggerOptions: LoggerOptions = {
 }
 
 // Keep the configuration close to the application's entry point (index.ts)
-initLogger(loggerOptions);
+initLogger('application-name', loggerOptions);
 
 logDebug('Debug message');
 ```
 
-- Credentials. There are two options:
-  - Option 1: read from `~/.aws/credentials`. The logger automatically picks up the credentials from this file. It is the default behavior when using the simple config.
-  - Option 2: access key and secret key can be passed to the transport, though manual configuration is required.
+Example using `~/.aws/credentials` + using default values,
+```ts
+import {
+  AwsCloudwatchTransportConfig,
+  PrettyConsoleTransportConfig,
+  LoggerOptions,
+  Transport,
+  LogLevel,
+  initLogger,
+  logDebug,
+} from '@sweetgreen/sg-node-logger';
+
+const loggerOptions: LoggerOptions = {
+  {
+    environments: [
+      {
+        nodeEnvironmentName: 'production',
+        transports: [
+          {
+            type: Transport.AwsCloudWatch,
+            awsRegion: 'us-east-1',
+            logGroupName: '/HelloWorldService/Production',
+          } as AwsCloudwatchTransportConfig,
+        ],
+      },
+      {
+        nodeEnvironmentName: 'development',
+        transports: [
+          {
+            type: Transport.PrettyConsole,
+            minimumLogLevel: LogLevel.Error, // Optional: defaults to Info
+          } as PrettyConsoleTransportConfig,
+        ],
+      },
+    ],
+  };
+}
+
+// Keep the configuration close to the application's entry point (index.ts)
+initLogger('application-name', loggerOptions);
+
+logDebug('Debug message');
+```
+With this option, the following defaults will be used:
+- `minimumLogLevel: LogLevel.Info`
+- `accessKeyId` and `secretAccessKey`: `~/.aws/credentials` will be used
+- `uploadRateInMilliseconds: 10000` - 10 seconds
+- `retentionInDays: 180` - 180 days
+
+- Credentials.
+  - There are two options:
+    - Option 1: read from `~/.aws/credentials`. The logger automatically picks up the credentials from this file. It is the default behavior when using the simple config.
+    - Option 2: access key and secret key can be passed to the transport, though manual configuration is required.
 - Best Practices
   - `uploadRateInMilliseconds` (must be between 200 and 60000 or 0.2 secs and 60 seconds)
     - Rate Limiting
@@ -350,6 +397,9 @@ logDebug('Debug message');
         - Another strategy is to use multiple log streams to avoid rate-limiting.
     - There are other limitations/quotas. Ensure to go over them especially for highly trafficked services.
   - `retentionInDays` (must be between 15 days and 180 days)
+    - AWS accepted values = [1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653]
+    - Module minimum is 14
+    - Module maximum is 180
     - Default is `150` days
 
 ## Development

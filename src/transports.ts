@@ -93,11 +93,11 @@ export function awsCloudWatchTransport({
   uploadRateInMilliseconds = 5000,
   retentionInDays = 180,
 }: AwsCloudWatchTransportOptions): WinstonCloudWatch {
-  const transportName = Transport[Transport.AwsCloudwatch].toString();
+  const transportName = Transport[Transport.AwsCloudWatch].toString();
   const maxUploadRateInMs = 60000;
   const minUploadRateInMis = 200;
   const maxRetetionInDays = 180;
-  const minRetentionInDays = 15;
+  const minRetentionInDays = 14;
 
   if (!awsRegion) {
     throw new InvalidParameterError(

@@ -6,14 +6,15 @@ import winston from 'winston';
 
 import {
   AwsCloudwatchTransportConfig,
+  SimpleConsoleTransportConfig,
+  PrettyConsoleTransportConfig,
   LogEntry,
   LoggerOptions,
   LogLevel,
   Transport,
 } from './types';
-import { newLogger, convertConfigToTransports } from './helpers';
-import { prettyConsoleTransport, simpleConsoleTransport } from './transports';
-import { defaultConfig } from './configs';
+import { newLogger, getTransports } from './helpers';
+import { simpleConsoleConfig, prettyConsoleConfig } from './configs';
 import { SgNodeLoggerError } from './errors';
 
 // Init dotenv
@@ -26,12 +27,12 @@ let logger: winston.Logger;
  *
  * @param options logger options/config
  */
-function initLogger(options?: LoggerOptions): void {
-  const transports = options
-    ? convertConfigToTransports(options.environments)
-    : convertConfigToTransports(defaultConfig());
+function initLogger(appName: string, options?: LoggerOptions): void {
+  const transports = options?.environments
+    ? getTransports(appName, options.environments)
+    : getTransports(appName, prettyConsoleConfig());
 
-  logger = newLogger(transports);
+  logger = newLogger(appName, transports);
 
   // PII Warning
   logWarn(
@@ -125,51 +126,83 @@ function logError(
 //
 // Test Only
 
-const loggerOptions = {
-  environments: [
-    {
-      nodeEnvironmentName: 'production',
-      transports: [
-        {
-          type: Transport.AwsCloudwatch,
-          // minimumLogLevel: LogLevel.Info,
-          awsRegion: 'us-east-1',
-          logGroupName: '/Sg-Node-Logger/Dev',
-          applicationName: 'sg-node-logger',
-          accessKeyId: 'AKIAQTBZ6QEQR34FG6BS',
-          secretAccessKey: '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',
-          // uploadRateInMilliseconds: 1000,
-          // retentionInDays: 1,
-        } as AwsCloudwatchTransportConfig,
-      ],
-    },
-    {
-      nodeEnvironmentName: 'development',
-      transports: [
-        {
-          type: Transport.PrettyConsole,
-          minimumLogLevel: LogLevel.Info,
-        },
-      ],
-    },
-  ],
-};
+// const loggerOptionsWithCreds = {
+//   environments: [
+//     {
+//       nodeEnvironmentName: 'production',
+//       transports: [
+//         {
+//           minimumLogLevel: LogLevel.Info,
+//           awsRegion: 'us-east-1',
+//           logGroupName: '/Sg-Node-Logger/Dev',
+//           accessKeyId: '<aws-access-key-id-goes-here>',
+//           secretAccessKey: '<aws-secret-access-key-goes-here>',
+//           uploadRateInMilliseconds: 1000,
+//           retentionInDays: 1,
+//         } as AwsCloudwatchTransportConfig,
+//       ],
+//     },
+//     {
+//       nodeEnvironmentName: 'development',
+//       transports: [
+//         {
+//           type: Transport.PrettyConsole,
+//           minimumLogLevel: LogLevel.Debug,
+//         },
+//       ],
+//     },
+//   ],
+// };
+// initLogger('sg-node-logger', loggerOptionsWithCreds);
 
-initLogger(loggerOptions);
+// const loggerOptionsWithoutCreds = {
+//   environments: [
+//     {
+//       nodeEnvironmentName: 'production',
+//       transports: [
+//         {
+//           type: Transport.AwsCloudWatch,
+//           minimumLogLevel: LogLevel.Info,
+//           awsRegion: 'us-east-1',
+//           logGroupName: '/Sg-Node-Logger/Dev',
+//           uploadRateInMilliseconds: 1000,
+//           retentionInDays: 14,
+//         } as AwsCloudwatchTransportConfig,
+//       ],
+//     },
+//     {
+//       nodeEnvironmentName: 'development',
+//       transports: [
+//         {
+//           type: Transport.PrettyConsole,
+//           minimumLogLevel: LogLevel.Debug,
+//         },
+//       ],
+//     },
+//   ],
+// };
+// initLogger('sg-node-logger', loggerOptionsWithoutCreds);
 
 // logDebug('testing debug');
 // logVerbose('testing verbose');
-logInfo('testing info', { a: 'jfkkjflsd', b: 137843 });
+// logInfo('testing info', { a: 'jfkkjflsd', b: 137843 });
 // logWarn('testing warn', undefined, ['tag1', 'tag2']);
 // logError('testing error');
 
 export {
-  LoggerOptions,
+  // logger functions
   initLogger,
-  // transports
-  prettyConsoleTransport,
-  simpleConsoleTransport,
+  LoggerOptions,
+  // enums
+  Transport,
+  LogLevel,
+  // interfaces
+  AwsCloudwatchTransportConfig,
+  SimpleConsoleTransportConfig,
+  PrettyConsoleTransportConfig,
   // pre-defined configs
+  prettyConsoleConfig,
+  simpleConsoleConfig,
   // helper functions
   logDebug,
   logVerbose,
