@@ -5,7 +5,7 @@
 ## Future Plans (stack ranked)
 
 - Add unit tests
-- Send logs to cloudwatch
+- Data Dog transport
 - Explore morgan integration
 - Automatically assign SessionId and RequestId if available
 - Handling of PII/sensitive information
@@ -13,7 +13,8 @@
   - Option 2: PII tagging system (field/object) to automatically remove sensitive information from logs
 - Config files that can be used by consumers to automatically configure logger to fit needs (i.e. using this logger in a raspberry pi env vs in ECS)
 - File/env-var based logger on/off switch
-  - Useful when logs are not needed when running unit tests
+  - Useful when logs are not needed (ie, unit tests)
+- AWS CloudWatch - auto manage rate-limiting (this may go away with the introduction of the DataDog transport)
 
 ## Vision 
 
@@ -68,11 +69,16 @@ The following environment variables are used by the package:
 
 ```javascript
 // CommonJS
-const { logDebug } = require('@sweetgreen/sg-node-logger');
+const { logDebug, initLogger } = require('@sweetgreen/sg-node-logger');
 
 // ES6
-import { logDebug } from '@sweetgreen/sg-node-logger';
+import { logDebug, initLogger } from '@sweetgreen/sg-node-logger';
 
+// Initialize logger once and only once
+// subsequent usage of `logDebug` does NOT need to be paired with `initLogger()`
+initLogger('application-name');
+
+// Log away
 logDebug('Debug message');
 ```
 
@@ -82,12 +88,15 @@ logDebug('Debug message');
 
 ```js
 import {
+  initLogger,
   logDebug,
   logVerbose,
   logInfo,
   logWarn,
   logError
 } from '@sweetgreen/sg-node-logger';
+
+initLogger('application-name');
 
 logDebug('Debug message');
 logVerbose('Verbose message');
@@ -99,7 +108,9 @@ logError('Error message');
 #### Logging Custom Data
 
 ```js
-import { logDebug } from '@sweetgreen/sg-node-logger';
+import { initLogger, logDebug } from '@sweetgreen/sg-node-logger';
+
+initLogger('application-name');
 
 // WARNING: it's your responsibility to remove all PII
 const customData = {
@@ -113,7 +124,9 @@ logDebug('Debug message', customData);
 #### Tagging (highly recommended)
 
 ```js
-import { logDebug } from '@sweetgreen/sg-node-logger';
+import { initLogger, logDebug } from '@sweetgreen/sg-node-logger';
+
+initLogger('application-name');
 
 const tags: string[] = ['main-feature-name', 'sub-feature-name'];
 
@@ -123,7 +136,9 @@ logDebug('Debug message', undefined, tags);
 #### Error
 
 ```js
-import { logError } from '@sweetgreen/sg-node-logger';
+import { initLogger, logError } from '@sweetgreen/sg-node-logger';
+
+initLogger('application-name');
 
 try {
   // CODE ...
@@ -138,48 +153,52 @@ try {
 
 This code is using the default configuration under the hood
 ```js
-import { logDebug } from '@sweetgreen/sg-node-logger';
+import { initLogger, logDebug } from '@sweetgreen/sg-node-logger';
+
+initLogger('application-name');
 
 logDebug('Debug message');
 ```
 
-Details of the default configuration (for the latest configuration checkout the function `defaultConfig()` in the `configs.ts` file):
+Details of the default configuration (for the latest configuration checkout the function `prettyConsoleConfig()` in the `configs.ts` file):
 ```js
 {
   environments: [
     {
       nodeEnvName: Environment.Production,
-      transports: [
-        {
-          type: Transport.SimpleConsole,
-          minimumLogLevel: LogLevel.Info,
-        },
-      ],
+      transports: {
+        prettyConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as PrettyConsoleTransportConfig,
+        ],
+      },
     },
     {
-      nodeEnvName: Environment.PreProduction,
-      transports: [
-        {
-          type: Transport.SimpleConsole,
-          minimumLogLevel: LogLevel.Info,
-        },
-      ],
+      nodeEnvName: Environment.Development,
+      transports: {
+        prettyConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as PrettyConsoleTransportConfig,
+        ],
+      },
     },
   ],
 }
 ```
 
-- Note that "production" and "preproduction" NODE_ENV values will be used if using the default configuration. Ensure to adjust your NODE_ENV environment values accordingly.
+- Note that "production" and "development" NODE_ENV values will be used if using the default configuration. Ensure to adjust your NODE_ENV environment values accordingly.
 
-#### Pre-Defined Configurations
+#### Pre-Defined Configurations (future plan)
 
-- Pre-defined configurations will be added over time to make it dead simple to use and to keep the code clean.
+- Pre-defined configurations will be added over time to make it as simple as possible to use and to keep the code clean and clear from file based configuration.
 
 ```js
-import { configureLogger, aPredefinedConfig } from '@sweetgreen/sg-node-logger';
+import { initLogger, aPredefinedConfig, logDebug } from '@sweetgreen/sg-node-logger';
 
 // Keep the configuration close to the application's entry point
-configureLogger(aPredefinedConfig);
+initLogger('application-name', aPredefinedConfig);
 
 logDebug('Debug message');
 ```
@@ -189,52 +208,99 @@ logDebug('Debug message');
 ```js
 import {
   LoggerOptions,
+  SimpleConsoleTransportConfig,
+  PrettyConsoleTransportConfig,
+  AwsCloudWatchTransportConfig,
   Transport,
   LogLevel,
-  configureLogger,
+  initLogger,
   logDebug,
 } from '@sweetgreen/sg-node-logger';
 
-const myConfigs: LoggerOptions = {
+const loggerOptions: LoggerOptions = {
   {
     environments: [
       {
-        nodeEnvName: 'production',
-        transports: [
-          {
-            type: Transport.SimpleConsole,
-            minimumLogLevel: LogLevel.Verbose, // Optional: defaults to Info
-          },
-          {
-            type: Transport.AwsCloudWatch, // Coming soon
-            minimumLogLevel: LogLevel.Warn, // Optional: defaults to Info
-          },
-        ],
+        nodeEnvironmentName: 'production',
+        transports: {
+          prettyConsole: [
+            {
+              minimumLogLevel: LogLevel.Verbose,
+            } as PrettyConsoleTransportConfig,
+          ],
+          awsCloudWatch: [
+            {
+              minimumLogLevel: LogLevel.Warn, // Optional: defaults to Info
+            } as AwsCloudWatchTransportConfig,
+          ],
+        },
       },
       {
-        nodeEnvName: 'development',
-        transports: [
-          {
-            type: Transport.SimpleConsole,
-            minimumLogLevel: LogLevel.Error, // Optional: defaults to Info
-          },
-        ],
+        nodeEnvironmentName: 'development',
+        transports: {
+          simpleConsole: [
+            {
+              minimumLogLevel: LogLevel.Error, // Optional: defaults to Info
+            } as SimpleConsoleTransportConfig,
+          ],
+        },
       },
     ],
   };
 }
 
 // Keep the configuration close to the application's entry point
-configureLogger(myConfigs);
+initLogger('application-name', loggerOptions);
 
 logDebug('Debug message');
 ```
 
-- `nodeEnvName` can be any value that your application uses in its lifecycle ('prod' vs. 'production', 'dev' vs. 'develop', etc)
+- `nodeEnvironmentName` can be any value that your application uses in its lifecycle ('prod' vs. 'production', 'dev' vs. 'develop', etc) when using the custom configuration.
 
 ## Transports
 
-### Simple
+### Available Transports
+
+```js
+import {
+  LoggerOptions,
+  SimpleConsoleTransportConfig,
+  PrettyConsoleTransportConfig,
+  AwsCloudwatchTransportConfig,
+} from '@sweetgreen/sg-node-logger';
+
+const loggerOptions: LoggerOptions = {
+  {
+    environments: [
+      {
+        nodeEnvironmentName: 'production',
+        transports: {
+          simpleConsole: [
+            {
+              // configuration goes here
+            } as SimpleConsoleTransportConfig,
+          ],
+          prettyConsole: [
+            {
+              // configuration goes here
+            } as PrettyConsoleTransportConfig,
+          ],
+          awsCloudWatch: [
+            {
+              // configuration goes here
+            } as AwsCloudwatchTransportConfig,
+            {
+              // same transports can be repeated
+            } as AwsCloudwatchTransportConfig,
+          ],
+        },
+      },
+    ],
+  };
+}
+```
+
+### SimpleConsole
 
 ```
 # Sample logs
@@ -243,14 +309,120 @@ warn: testing warn {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
 error: testing error {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
 ```
 
-### Colored
+### PrettyConsole
 
+![PrettyConsole](/assets/pretty-transport-1.png)
+
+### AwsCloudwatch
+
+- Credentials
+  - There are two options:
+    - Option 1: read from `~/.aws/credentials`. The logger automatically picks up the credentials from this file. It is the default behavior when using the simple config.
+    - Option 2: access key and secret key can be passed to the transport, though manual configuration is required.
+- Best Practices
+  - `uploadRateInMilliseconds` (must be between 200 and 60000 or 0.2 secs and 60 seconds)
+    - Rate Limiting
+      - CW Log groups have quotas and rate limits. Make sure it's well understood when deciding this value
+        - Currently, CW log streams are limited to 5 requests per second -> 200 milliseconds.
+        - [PutLogEvents](https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutLogEvents.html)
+        - [CloudWatch Service Quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_limits.html)
+    - Values - recommendations
+      - Default value is 10000 - 10 seconds
+      - Sample usage, use the value 1000 if there will be 5 instances running your application. Which translates to 5 requests per second.
+      - Another strategy is to use multiple log streams to avoid rate-limiting.
+  - `retentionInDays` (must be between 15 days and 180 days)
+    - AWS accepted values = [1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653]
+    - Module minimum is 1
+    - Module maximum is 180
+    - Default is `150` days
+
+Example full custom configuration - typical,
+```ts
+import {
+  AwsCloudwatchTransportConfig,
+  LoggerOptions,
+  LogLevel,
+  initLogger,
+  logDebug,
+} from '@sweetgreen/sg-node-logger';
+
+const loggerOptions: LoggerOptions = {
+  {
+    environments: [
+      {
+        nodeEnvironmentName: 'production',
+        transports: {
+          awsCloudWatch: [{
+            {
+              // Optional: defaults to Info
+              minimumLogLevel: LogLevel.Info,
+              
+              awsRegion: 'us-east-1',
+
+              logGroupName: '/HelloWorldService/Production',
+
+              // Optional: both access and secret must be passed, otherwise 
+              // it throws an error.
+              // Make sure both are empty/undefined to use the '~/.aws/credentials' file.
+              accessKeyId: '<aws-access-key-id>',
+              secretAccessKey: '<aws-secret-access-key>',
+
+              // Optional: defaults to 10000 (10 secs)
+              uploadRateInMilliseconds: 10000,
+
+              // Optional: defaults to 180 days
+              retentionInDays: 30,
+            } as AwsCloudwatchTransportConfig,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+// Keep the configuration close to the application's entry point (index.ts)
+initLogger('application-name', loggerOptions);
+
+logDebug('Debug message');
 ```
-# Sample logs
-[SGLOG]  2020-11-20 10:26:22.866  info : testing info
-[SGLOG]  2020-11-20 10:26:22.872  warn : testing warn 
-[SGLOG]  2020-11-20 10:26:22.872  error : testing error
+
+Example using `~/.aws/credentials` + using default values,
+```ts
+import {
+  AwsCloudwatchTransportConfig,
+  LoggerOptions,
+  initLogger,
+  logDebug,
+} from '@sweetgreen/sg-node-logger';
+
+const loggerOptions: LoggerOptions = {
+  {
+    environments: [
+      {
+        nodeEnvironmentName: 'production',
+        transports: {
+          awsCloudWatch: [
+            {
+              awsRegion: 'us-east-1',
+              logGroupName: '/HelloWorldService/Production',
+            } as AwsCloudwatchTransportConfig,
+          ],
+        },
+      },
+    ],
+  };
+}
+
+// Keep the configuration close to the application's entry point (index.ts)
+initLogger('application-name', loggerOptions);
+
+logDebug('Debug message');
 ```
+With this option, the following defaults will be used:
+- `minimumLogLevel` will be default `LogLevel.Info`
+- `accessKeyId` and `secretAccessKey` are empty, therefore `~/.aws/credentials` will be used
+- `uploadRateInMilliseconds` will use the default `10000` ms - 10 seconds
+- `retentionInDays` will use the default `180` days
 
 ## Development
 

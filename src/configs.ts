@@ -1,30 +1,107 @@
-import { Environment, LogLevel, Transport, LoggerOptions } from './types';
+import {
+  Environment,
+  LogLevel,
+  EnvironmentConfig,
+  PrettyConsoleTransportConfig,
+  SimpleConsoleTransportConfig,
+} from './types';
 
 /**
- * Uses the PrettyConsole with Info log level across all
- * environments
+ * Predefined configuration using simple consoles in all environments
+ *
+ * Setup
+ * - Production: PrettyConsole - Info
+ * - PreProduction: PrettyConsole - Info
  */
-export function defaultConfig(): LoggerOptions {
-  return {
-    environments: [
-      {
-        nodeEnvName: Environment.Production,
-        transports: [
+export function simpleConsoleConfig(): EnvironmentConfig[] {
+  return [
+    {
+      nodeEnvironmentName: Environment.Production,
+      transports: {
+        simpleConsole: [
           {
-            type: Transport.PrettyConsole,
             minimumLogLevel: LogLevel.Info,
-          },
+          } as SimpleConsoleTransportConfig,
         ],
       },
-      {
-        nodeEnvName: Environment.PreProduction,
-        transports: [
+    },
+    {
+      nodeEnvironmentName: Environment.Development,
+      transports: {
+        simpleConsole: [
           {
-            type: Transport.PrettyConsole,
             minimumLogLevel: LogLevel.Info,
-          },
+          } as SimpleConsoleTransportConfig,
         ],
       },
-    ],
-  };
+    },
+  ];
 }
+
+/**
+ * Predefined configuration using pretty consoles in all environments
+ *
+ * Setup
+ * - Production: PrettyConsole - Info
+ * - PreProduction: PrettyConsole - Info
+ */
+export function prettyConsoleConfig(): EnvironmentConfig[] {
+  return [
+    {
+      nodeEnvironmentName: Environment.Production,
+      transports: {
+        prettyConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as PrettyConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.Development,
+      transports: {
+        prettyConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as PrettyConsoleTransportConfig,
+        ],
+      },
+    },
+  ];
+}
+
+// /**
+//  * Simple predefined configuration
+//  *
+//  * Setup:
+//  * - Production: AwsCloudWatch - Info
+//  * - PreProduction: PrettyConsole - Info
+//  */
+// export function simplePredefinedConfig(): EnvironmentConfig[] {
+//   return [
+//     {
+//       nodeEnvironmentName: Environment.Production,
+//       transports: [
+//         {
+//           type: Transport.AwsCloudWatch,
+//           minimumLogLevel: LogLevel.Info,
+//           awsRegion: '',
+//           logGroupName: '',
+//           applicationName: '',
+//           accessKeyId: '',
+//           secretAccessKey: '',
+//           uploadRateInMilliseconds: 1000,
+//           retentionInDays: 180,
+//         } as AwsCloudwatchTransportConfig,
+//       ],
+//     },
+//     {
+//       nodeEnvironmentName: Environment.Development,
+//       transports: [
+//         {
+//           minimumLogLevel: LogLevel.Info,
+//         } as PrettyConsoleConfig,
+//       ],
+//     },
+//   ];
+// }

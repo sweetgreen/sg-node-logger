@@ -1,11 +1,15 @@
 export type Option<T> = T | undefined;
 
+//
+// ENUM
+//
+
 /**
- * Default environments
+ * Default environments and meant to be used internally in this module.
  */
 export enum Environment {
   Production = 'production',
-  PreProduction = 'preproduction',
+  Development = 'development',
 }
 
 /**
@@ -29,30 +33,48 @@ export enum LogLevel {
   Debug = 5,
 }
 
-/**
- * List of transports
- */
-export enum Transport {
-  SimpleConsole,
-  PrettyConsole,
-}
+//
+// CONFIG
+//
 
 export interface LoggerOptions {
-  environments: EnvironmentConfig[];
+  environments?: EnvironmentConfig[];
 }
 
 export interface EnvironmentConfig {
-  nodeEnvName: string;
-  transports: TransportConfig[];
+  nodeEnvironmentName: string;
+  transports: TransportConfig;
 }
 
 export interface TransportConfig {
-  type: Transport;
+  simpleConsole?: SimpleConsoleTransportConfig[];
+  prettyConsole?: PrettyConsoleTransportConfig[];
+  awsCloudWatch?: AwsCloudWatchTransportConfig[];
+}
+
+export interface TransportConfigBase {
   minimumLogLevel?: LogLevel;
 }
 
+export interface SimpleConsoleTransportConfig extends TransportConfigBase {}
+
+export interface PrettyConsoleTransportConfig extends TransportConfigBase {}
+
+export interface AwsCloudWatchTransportConfig extends TransportConfigBase {
+  awsRegion: string;
+  logGroupName: string;
+  accessKeyId?: string;
+  secretAccessKey?: string;
+  uploadRateInMilliseconds?: number;
+  retentionInDays?: number;
+}
+
+//
+// LOG
+//
+
 /**
- * User defined log entry
+ * User defined log entry`
  */
 export interface LogEntry {
   logLevel: LogLevel;
@@ -72,6 +94,7 @@ export interface DynamicLogMetadata {
   utcTimestamp?: string;
   sessionId?: string;
   correlationId?: string;
+  requestId?: string;
 }
 
 /**
@@ -88,6 +111,7 @@ export interface StaticLogMetadata {
   osBuildNumber?: string;
 }
 
+/** Shape of the full log */
 export interface SgLog
   extends LogEntry,
     DynamicLogMetadata,

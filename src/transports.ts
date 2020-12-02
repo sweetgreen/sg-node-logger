@@ -1,7 +1,10 @@
 import winston from 'winston';
+import AWS from 'aws-sdk';
 import { ConsoleTransportInstance } from 'winston/lib/winston/transports';
+import WinstonCloudWatch from 'winston-cloudwatch';
 
 import { LogLevel } from './types';
+import { ParameterLoggerError } from './errors';
 
 /**
  * Basic console stdout
@@ -62,6 +65,104 @@ export function prettyConsoleTransport(
   });
 }
 
-// export function awsCloudWatchTransport(
-//   minimumLogLevel: LogLevel = LogLevel.Info
-// );
+export interface AwsCloudWatchTransportOptions {
+  minimumLogLevel?: LogLevel;
+  awsRegion: string;
+  logGroupName: string;
+  applicationName?: string;
+  accessKeyId?: string;
+  secretAccessKey?: string;
+  uploadRateInMilliseconds?: number;
+  retentionInDays?: number;
+}
+
+/**
+ * Sends logs to AWS CloudWatch
+ *
+ * @param options
+ *
+ * @throws InvalidParameterError
+ */
+export function awsCloudWatchTransport({
+  minimumLogLevel = LogLevel.Info,
+  awsRegion,
+  logGroupName,
+  applicationName,
+  accessKeyId,
+  secretAccessKey,
+  uploadRateInMilliseconds = 10000,
+  retentionInDays = 180,
+}: AwsCloudWatchTransportOptions): WinstonCloudWatch {
+  const transportName = 'AwsCloudWatch';
+  const maxUploadRateInMs = 60000;
+  const minUploadRateInMis = 200;
+  const maxRetentionInDays = 180;
+  const minRetentionInDays = 1;
+
+  if (!awsRegion) {
+    throw new ParameterLoggerError(
+      `[${transportName}] 'AwsRegion' is a required input.`
+    );
+  }
+
+  if (accessKeyId && !secretAccessKey) {
+    throw new ParameterLoggerError(
+      `[${transportName}] AWS 'AccessKeyId' is present, however, 
+      'SecretAccessKey' is missing. Ensure both inputs are supplied 
+      when custom configuring the logger.`
+    );
+  } else if (!accessKeyId && secretAccessKey) {
+    throw new ParameterLoggerError(
+      `[${transportName}] AWS 'SecretAccessKey' is present, however, 
+      'AccessKeyId' is missing. Ensure both inputs are supplied when 
+      custom configuring the logger.`
+    );
+  } else if (accessKeyId && secretAccessKey) {
+    AWS.config.update({
+      region: awsRegion,
+      credentials: {
+        accessKeyId: accessKeyId,
+        secretAccessKey: secretAccessKey,
+      },
+    });
+  } else {
+    AWS.config.update({
+      region: awsRegion,
+    });
+  }
+
+  if (
+    uploadRateInMilliseconds < minUploadRateInMis ||
+    uploadRateInMilliseconds > maxUploadRateInMs
+  ) {
+    throw new ParameterLoggerError(
+      `[${transportName}] The 'UploadRateInMilliseconds' (${uploadRateInMilliseconds}) 
+      parameter must be between ${minUploadRateInMis} ms and ${maxUploadRateInMs} ms.`
+    );
+  }
+
+  if (
+    retentionInDays < minRetentionInDays ||
+    retentionInDays > maxRetentionInDays
+  ) {
+    throw new ParameterLoggerError(
+      `[${transportName}] The 'RetentionInDays' (${retentionInDays}) parameter 
+      must be between ${minRetentionInDays} days and ${maxRetentionInDays} days.`
+    );
+  }
+
+  return new WinstonCloudWatch({
+    cloudWatchLogs: new AWS.CloudWatchLogs(),
+    level: LogLevel[minimumLogLevel].toLowerCase(),
+    logGroupName: logGroupName,
+    // NOTE: setting 'logStreamName' to a function will split logs across multiple streams.
+    // A rotation can be created using multiple criteria (i.e. date, hour, etc.)
+    logStreamName: () => {
+      const [logDate, logTime] = new Date().toISOString().split('T');
+      return `${applicationName}.${logDate}`;
+    },
+    jsonMessage: true,
+    uploadRate: uploadRateInMilliseconds,
+    retentionInDays: retentionInDays,
+  });
+}
