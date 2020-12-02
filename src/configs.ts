@@ -4,7 +4,6 @@ import {
   EnvironmentConfig,
   PrettyConsoleTransportConfig,
   SimpleConsoleTransportConfig,
-  Transport,
 } from './types';
 
 /**
@@ -18,21 +17,23 @@ export function simpleConsoleConfig(): EnvironmentConfig[] {
   return [
     {
       nodeEnvironmentName: Environment.Production,
-      transports: [
-        {
-          type: Transport.SimpleConsole,
-          minimumLogLevel: LogLevel.Info,
-        } as SimpleConsoleTransportConfig,
-      ],
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as SimpleConsoleTransportConfig,
+        ],
+      },
     },
     {
       nodeEnvironmentName: Environment.Development,
-      transports: [
-        {
-          type: Transport.SimpleConsole,
-          minimumLogLevel: LogLevel.Info,
-        } as SimpleConsoleTransportConfig,
-      ],
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as SimpleConsoleTransportConfig,
+        ],
+      },
     },
   ];
 }
@@ -48,21 +49,23 @@ export function prettyConsoleConfig(): EnvironmentConfig[] {
   return [
     {
       nodeEnvironmentName: Environment.Production,
-      transports: [
-        {
-          type: Transport.PrettyConsole,
-          minimumLogLevel: LogLevel.Info,
-        } as PrettyConsoleTransportConfig,
-      ],
+      transports: {
+        prettyConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as PrettyConsoleTransportConfig,
+        ],
+      },
     },
     {
       nodeEnvironmentName: Environment.Development,
-      transports: [
-        {
-          type: Transport.PrettyConsole,
-          minimumLogLevel: LogLevel.Info,
-        } as PrettyConsoleTransportConfig,
-      ],
+      transports: {
+        prettyConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as PrettyConsoleTransportConfig,
+        ],
+      },
     },
   ];
 }

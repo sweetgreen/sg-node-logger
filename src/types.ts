@@ -13,15 +13,6 @@ export enum Environment {
 }
 
 /**
- * List of transports
- */
-export enum Transport {
-  SimpleConsole,
-  PrettyConsole,
-  AwsCloudWatch,
-}
-
-/**
  * List of log levels
  *
  * The log levels are used to determine at which level to start logging.
@@ -52,19 +43,24 @@ export interface LoggerOptions {
 
 export interface EnvironmentConfig {
   nodeEnvironmentName: string;
-  transports: TransportConfig[];
+  transports: TransportConfig;
 }
 
 export interface TransportConfig {
-  type: Transport;
+  simpleConsole?: SimpleConsoleTransportConfig[];
+  prettyConsole?: PrettyConsoleTransportConfig[];
+  awsCloudWatch?: AwsCloudWatchTransportConfig[];
+}
+
+export interface TransportConfigBase {
   minimumLogLevel?: LogLevel;
 }
 
-export interface SimpleConsoleTransportConfig extends TransportConfig {}
+export interface SimpleConsoleTransportConfig extends TransportConfigBase {}
 
-export interface PrettyConsoleTransportConfig extends TransportConfig {}
+export interface PrettyConsoleTransportConfig extends TransportConfigBase {}
 
-export interface AwsCloudwatchTransportConfig extends TransportConfig {
+export interface AwsCloudWatchTransportConfig extends TransportConfigBase {
   awsRegion: string;
   logGroupName: string;
   accessKeyId?: string;
@@ -78,7 +74,7 @@ export interface AwsCloudwatchTransportConfig extends TransportConfig {
 //
 
 /**
- * User defined log entry
+ * User defined log entry`
  */
 export interface LogEntry {
   logLevel: LogLevel;

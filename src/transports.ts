@@ -3,8 +3,8 @@ import AWS from 'aws-sdk';
 import { ConsoleTransportInstance } from 'winston/lib/winston/transports';
 import WinstonCloudWatch from 'winston-cloudwatch';
 
-import { LogLevel, Transport } from './types';
-import { InvalidParameterError } from './errors';
+import { LogLevel } from './types';
+import { ParameterLoggerError } from './errors';
 
 /**
  * Basic console stdout
@@ -90,29 +90,29 @@ export function awsCloudWatchTransport({
   applicationName,
   accessKeyId,
   secretAccessKey,
-  uploadRateInMilliseconds = 5000,
+  uploadRateInMilliseconds = 10000,
   retentionInDays = 180,
 }: AwsCloudWatchTransportOptions): WinstonCloudWatch {
-  const transportName = Transport[Transport.AwsCloudWatch].toString();
+  const transportName = 'AwsCloudWatch';
   const maxUploadRateInMs = 60000;
   const minUploadRateInMis = 200;
-  const maxRetetionInDays = 180;
-  const minRetentionInDays = 14;
+  const maxRetentionInDays = 180;
+  const minRetentionInDays = 1;
 
   if (!awsRegion) {
-    throw new InvalidParameterError(
+    throw new ParameterLoggerError(
       `[${transportName}] 'AwsRegion' is a required input.`
     );
   }
 
   if (accessKeyId && !secretAccessKey) {
-    throw new InvalidParameterError(
+    throw new ParameterLoggerError(
       `[${transportName}] AWS 'AccessKeyId' is present, however, 
       'SecretAccessKey' is missing. Ensure both inputs are supplied 
       when custom configuring the logger.`
     );
   } else if (!accessKeyId && secretAccessKey) {
-    throw new InvalidParameterError(
+    throw new ParameterLoggerError(
       `[${transportName}] AWS 'SecretAccessKey' is present, however, 
       'AccessKeyId' is missing. Ensure both inputs are supplied when 
       custom configuring the logger.`
@@ -135,7 +135,7 @@ export function awsCloudWatchTransport({
     uploadRateInMilliseconds < minUploadRateInMis ||
     uploadRateInMilliseconds > maxUploadRateInMs
   ) {
-    throw new InvalidParameterError(
+    throw new ParameterLoggerError(
       `[${transportName}] The 'UploadRateInMilliseconds' (${uploadRateInMilliseconds}) 
       parameter must be between ${minUploadRateInMis} ms and ${maxUploadRateInMs} ms.`
     );
@@ -143,11 +143,11 @@ export function awsCloudWatchTransport({
 
   if (
     retentionInDays < minRetentionInDays ||
-    retentionInDays > maxRetetionInDays
+    retentionInDays > maxRetentionInDays
   ) {
-    throw new InvalidParameterError(
+    throw new ParameterLoggerError(
       `[${transportName}] The 'RetentionInDays' (${retentionInDays}) parameter 
-      must be between ${minRetentionInDays} days and ${maxUploadRateInMs} days.`
+      must be between ${minRetentionInDays} days and ${maxRetentionInDays} days.`
     );
   }
 

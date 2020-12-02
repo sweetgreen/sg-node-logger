@@ -1,28 +1,28 @@
-export class SgNodeLoggerError extends Error {
+export class LoggerError extends Error {
   constructor(message?: string) {
     super(message);
   }
 }
 
-export class UnknownTransportError extends SgNodeLoggerError {
+export class TransportLoggerError extends LoggerError {
   constructor(message?: string) {
     super(message);
   }
 }
 
-export class MissingConfigurationError extends SgNodeLoggerError {
+export class ConfigurationLoggerError extends LoggerError {
   constructor(message?: string) {
     super(message);
   }
 }
 
-export class MissingEnvironmentVariableError extends SgNodeLoggerError {
+export class EnvironmentVariableLoggerError extends LoggerError {
   constructor(message?: string) {
     super(message);
   }
 }
 
-export class InvalidParameterError extends SgNodeLoggerError {
+export class ParameterLoggerError extends LoggerError {
   constructor(message?: string) {
     super(message);
   }

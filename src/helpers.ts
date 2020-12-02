@@ -2,10 +2,9 @@ import winston from 'winston';
 
 import {
   Option,
-  Transport,
   EnvironmentConfig,
   StaticLogMetadata,
-  AwsCloudwatchTransportConfig,
+  AwsCloudWatchTransportConfig,
 } from './types';
 import {
   awsCloudWatchTransport,
@@ -14,9 +13,8 @@ import {
 } from './transports';
 import { prettyConsoleConfig } from './configs';
 import {
-  UnknownTransportError,
-  MissingConfigurationError,
-  MissingEnvironmentVariableError,
+  ConfigurationLoggerError,
+  EnvironmentVariableLoggerError,
 } from './errors';
 
 export function newLogger(
@@ -60,7 +58,7 @@ export function getTransports(
   const nodeEnv: Option<string> = process.env.NODE_ENV?.trim().toLowerCase();
 
   if (!nodeEnv) {
-    throw new MissingEnvironmentVariableError('NODE_ENV variable must be set');
+    throw new EnvironmentVariableLoggerError('NODE_ENV variable must be set');
   }
 
   // Find the config for the current environment
@@ -69,51 +67,78 @@ export function getTransports(
   );
 
   if (environments.length === 0) {
-    throw new MissingConfigurationError(
+    throw new ConfigurationLoggerError(
       `There is no configuration for the '${nodeEnv}' environment.`
     );
   }
 
-  const currentEnvironmentConfig = environments[0];
+  if (environments.length > 1) {
+    throw new ConfigurationLoggerError(
+      `There are multiple configurations for the '${nodeEnv}' environment.`
+    );
+  }
 
-  if (currentEnvironmentConfig.transports.length === 0) {
-    throw new MissingConfigurationError(
-      `'transports' are missing for the '${nodeEnv}' environment.`
+  const environmentTransports = environments[0].transports;
+
+  // At least one transport must be configured
+  if (
+    (!environmentTransports.simpleConsole ||
+      environmentTransports.simpleConsole.length === 0) &&
+    (!environmentTransports.prettyConsole ||
+      environmentTransports.prettyConsole.length === 0) &&
+    (!environmentTransports.awsCloudWatch ||
+      environmentTransports.awsCloudWatch.length === 0)
+  ) {
+    throw new ConfigurationLoggerError(
+      `At least one transport must be configured for the '${nodeEnv}' environment.`
     );
   }
 
   const transports: winston.transport[] = [];
 
-  // Get transports
-  currentEnvironmentConfig.transports.forEach((config) => {
-    switch (config.type) {
-      case Transport.SimpleConsole:
-        transports.push(simpleConsoleTransport(config.minimumLogLevel));
-        break;
-      case Transport.PrettyConsole:
-        transports.push(prettyConsoleTransport(config.minimumLogLevel));
-        break;
-      case Transport.AwsCloudWatch:
-        const cloudwatchConfig = config as AwsCloudwatchTransportConfig;
-        transports.push(
-          awsCloudWatchTransport({
-            minimumLogLevel: cloudwatchConfig.minimumLogLevel,
-            awsRegion: cloudwatchConfig.awsRegion,
-            logGroupName: cloudwatchConfig.logGroupName,
-            applicationName: appName,
-            accessKeyId: cloudwatchConfig.accessKeyId,
-            secretAccessKey: cloudwatchConfig.secretAccessKey,
-            uploadRateInMilliseconds: cloudwatchConfig.uploadRateInMilliseconds,
-            retentionInDays: cloudwatchConfig.retentionInDays,
-          })
-        );
-        break;
-      default:
-        throw new UnknownTransportError(
-          `Transport type '${config.type}' has not been mapped yet`
-        );
-    }
-  });
+  // TODO: DRY - create single function to handle all transports
+  // OPTION: use classes/OOP - each class should know how to handle itself
+
+  // Simple Console Transport
+  if (
+    environmentTransports.simpleConsole &&
+    environmentTransports.simpleConsole.length > 0
+  ) {
+    environmentTransports.simpleConsole.forEach((transport) => {
+      transports.push(simpleConsoleTransport(transport.minimumLogLevel));
+    });
+  }
+
+  // Pretty Console Transport
+  if (
+    environmentTransports.prettyConsole &&
+    environmentTransports.prettyConsole.length > 0
+  ) {
+    environmentTransports.prettyConsole.forEach((transport) => {
+      transports.push(prettyConsoleTransport(transport.minimumLogLevel));
+    });
+  }
+
+  // AWS CloudWatch
+  if (
+    environmentTransports.awsCloudWatch &&
+    environmentTransports.awsCloudWatch.length > 0
+  ) {
+    environmentTransports.awsCloudWatch.forEach((transport) => {
+      transports.push(
+        awsCloudWatchTransport({
+          minimumLogLevel: transport.minimumLogLevel,
+          awsRegion: transport.awsRegion,
+          logGroupName: transport.logGroupName,
+          applicationName: appName,
+          accessKeyId: transport.accessKeyId,
+          secretAccessKey: transport.secretAccessKey,
+          uploadRateInMilliseconds: transport.uploadRateInMilliseconds,
+          retentionInDays: transport.retentionInDays,
+        } as AwsCloudWatchTransportConfig)
+      );
+    });
+  }
 
   return transports;
 }
