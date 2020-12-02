@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.4.0...v1.5.0) (2020-12-02)
+
+
+### Features
+
+* **new transport:** added cloudwatch transport and refactored default selection ([7cb1bec](https://github.com/sweetgreen/sg-node-logger/commit/7cb1becb9b9be58370cb3385450ce0cd1a55532d))
+
 # [1.4.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.3.0...v1.4.0) (2020-11-24)
 
 
