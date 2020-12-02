@@ -21,9 +21,17 @@ jobs:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
 
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
 
       - run: yarn build
+
+      # FIXME: Add tests
+      # - run: yarn test
+
+      - name: Danger
+        run: yarn danger ci
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Semantic Release
         id: semantic
