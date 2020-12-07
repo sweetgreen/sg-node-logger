@@ -63,7 +63,13 @@ npm i @sweetgreen/sg-node-logger
 
 The following environment variables are used by the package:
 - `NODE_ENV`
+  - Required
   - Assigns logger transports based on the environment value
+- `SGLOGGER_ENABLED`
+  - Optional
+  - Valid values: true, false
+    - Example, `SGLOGGER_ENABLED=true`
+  - Turns logger on/off. Useful when running unit tests.
 
 ## Usage
 

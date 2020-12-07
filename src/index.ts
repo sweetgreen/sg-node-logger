@@ -15,6 +15,7 @@ import {
 import { newLogger, getTransports } from './helpers';
 import { simpleConsoleConfig, prettyConsoleConfig } from './configs';
 import { LoggerError } from './errors';
+import { loggerEnabled } from './utils/environmentsUtil';
 
 // Init dotenv
 dotenv.config();
@@ -50,6 +51,11 @@ function initLogger(appName: string, options?: LoggerOptions): void {
  * @param log log object
  */
 function log(log: LogEntry): void {
+  // Skip logging if disabled
+  if (!loggerEnabled()) {
+    return;
+  }
+
   // TODO: set DynamicLogMetadata
   // const metadata: DynamicLogMetadata = {
   //   utcTimestamp: new Date().toISOString(),
@@ -63,7 +69,7 @@ function log(log: LogEntry): void {
 
   if (!logger) {
     throw new LoggerError(
-      `Ensure the logger has been initialized by calling initLogger() at the app's entry point.`
+      `The logger hasn't been initialized. Make sure to call initLogger() at the app's entry point.`
     );
   }
 
@@ -274,11 +280,11 @@ function logError(
 // };
 // initLogger('sg-node-logger', loggerOptions);
 
-// logDebug('testing debug');
-// logVerbose('testing verbose');
-// logInfo('testing info', { a: 'jfkkjflsd', b: 137843 });
-// logWarn('testing warn', undefined, ['tag1', 'tag2']);
-// logError('testing error');
+logDebug('testing debug');
+logVerbose('testing verbose');
+logInfo('testing info', { a: 'jfkkjflsd', b: 137843 });
+logWarn('testing warn', undefined, ['tag1', 'tag2']);
+logError('testing error');
 
 export {
   // logger

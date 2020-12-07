@@ -1,4 +1,5 @@
 import winston from 'winston';
+import { environmentName } from './utils/environmentsUtil';
 
 import {
   Option,
@@ -22,7 +23,7 @@ export function newLogger(
   transports: winston.transport[]
 ): winston.Logger {
   const staticLogMetadata: StaticLogMetadata = {
-    environment: process.env.NODE_ENV,
+    environment: environmentName() ?? '[undefined]',
     appName: appName,
   };
 
@@ -55,7 +56,7 @@ export function getTransports(
   appName: string,
   environmentConfigs: EnvironmentConfig[]
 ): winston.transport[] {
-  const nodeEnv: Option<string> = process.env.NODE_ENV?.trim().toLowerCase();
+  const nodeEnv: Option<string> = environmentName()?.trim().toLowerCase();
 
   if (!nodeEnv) {
     throw new EnvironmentVariableLoggerError('NODE_ENV variable must be set');
