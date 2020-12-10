@@ -114,7 +114,7 @@ export function prettyConsoleConfig(): EnvironmentConfig[] {
  * - Production: RawJSONConsole - Info
  * - PreProduction: RawJSONConsole - Info
  */
-export function basicJSONConsole(): EnvironmentConfig[] {
+export function rawJSONConsole(): EnvironmentConfig[] {
   return [
     {
       nodeEnvironmentName: Environment.Production,

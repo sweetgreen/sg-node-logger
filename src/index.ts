@@ -17,7 +17,7 @@ import { newLogger, getTransports } from './helpers';
 import {
   simpleConsoleConfig,
   prettyConsoleConfig,
-  basicJSONConsole,
+  rawJSONConsole,
 } from './configs';
 import { LoggerError } from './errors';
 
@@ -34,7 +34,7 @@ let logger: winston.Logger;
 function initLogger(appName: string, options?: LoggerOptions): void {
   const transports = options?.environments
     ? getTransports(appName, options.environments)
-    : getTransports(appName, basicJSONConsole());
+    : getTransports(appName, rawJSONConsole());
 
   logger = newLogger(appName, transports);
 
@@ -299,7 +299,7 @@ export {
   // pre-defined configs - more coming soon
   prettyConsoleConfig,
   simpleConsoleConfig,
-  basicJSONConsole,
+  rawJSONConsole,
   // helper functions
   logDebug,
   logVerbose,
