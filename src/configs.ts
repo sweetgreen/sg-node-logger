@@ -1,3 +1,4 @@
+import { RawJSONConsoleTransportConfig } from '.';
 import {
   Environment,
   LogLevel,
@@ -105,3 +106,35 @@ export function prettyConsoleConfig(): EnvironmentConfig[] {
 //     },
 //   ];
 // }
+
+/**
+ * Predefined configuration using raw JSON consoles in all environments
+ *
+ * Setup
+ * - Production: RawJSONConsole - Info
+ * - PreProduction: RawJSONConsole - Info
+ */
+export function basicJSONConsole(): EnvironmentConfig[] {
+  return [
+    {
+      nodeEnvironmentName: Environment.Production,
+      transports: {
+        rawJSONConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as RawJSONConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.Development,
+      transports: {
+        rawJSONConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as RawJSONConsoleTransportConfig,
+        ],
+      },
+    },
+  ];
+}

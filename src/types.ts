@@ -50,6 +50,7 @@ export interface TransportConfig {
   simpleConsole?: SimpleConsoleTransportConfig[];
   prettyConsole?: PrettyConsoleTransportConfig[];
   awsCloudWatch?: AwsCloudWatchTransportConfig[];
+  rawJSONConsole?: RawJSONConsoleTransportConfig[];
 }
 
 export interface TransportConfigBase {
@@ -68,6 +69,8 @@ export interface AwsCloudWatchTransportConfig extends TransportConfigBase {
   uploadRateInMilliseconds?: number;
   retentionInDays?: number;
 }
+
+export interface RawJSONConsoleTransportConfig extends TransportConfigBase {}
 
 //
 // LOG

@@ -8,12 +8,17 @@ import {
   AwsCloudWatchTransportConfig,
   SimpleConsoleTransportConfig,
   PrettyConsoleTransportConfig,
+  RawJSONConsoleTransportConfig,
   LogEntry,
   LoggerOptions,
   LogLevel,
 } from './types';
 import { newLogger, getTransports } from './helpers';
-import { simpleConsoleConfig, prettyConsoleConfig } from './configs';
+import {
+  simpleConsoleConfig,
+  prettyConsoleConfig,
+  basicJSONConsole,
+} from './configs';
 import { LoggerError } from './errors';
 
 // Init dotenv
@@ -29,7 +34,7 @@ let logger: winston.Logger;
 function initLogger(appName: string, options?: LoggerOptions): void {
   const transports = options?.environments
     ? getTransports(appName, options.environments)
-    : getTransports(appName, prettyConsoleConfig());
+    : getTransports(appName, basicJSONConsole());
 
   logger = newLogger(appName, transports);
 
@@ -290,9 +295,11 @@ export {
   SimpleConsoleTransportConfig,
   PrettyConsoleTransportConfig,
   AwsCloudWatchTransportConfig,
+  RawJSONConsoleTransportConfig,
   // pre-defined configs - more coming soon
   prettyConsoleConfig,
   simpleConsoleConfig,
+  basicJSONConsole,
   // helper functions
   logDebug,
   logVerbose,

@@ -10,6 +10,7 @@ import {
   awsCloudWatchTransport,
   prettyConsoleTransport,
   simpleConsoleTransport,
+  rawJSONConsoleTransport,
 } from './transports';
 import { prettyConsoleConfig } from './configs';
 import {
@@ -82,6 +83,8 @@ export function getTransports(
 
   // At least one transport must be configured
   if (
+    (!environmentTransports.rawJSONConsole ||
+      environmentTransports.rawJSONConsole.length === 0) &&
     (!environmentTransports.simpleConsole ||
       environmentTransports.simpleConsole.length === 0) &&
     (!environmentTransports.prettyConsole ||
@@ -137,6 +140,15 @@ export function getTransports(
           retentionInDays: transport.retentionInDays,
         } as AwsCloudWatchTransportConfig)
       );
+    });
+  }
+
+  if (
+    environmentTransports.rawJSONConsole &&
+    environmentTransports.rawJSONConsole.length > 0
+  ) {
+    environmentTransports.rawJSONConsole.forEach((transport) => {
+      transports.push(rawJSONConsoleTransport(transport.minimumLogLevel));
     });
   }
 

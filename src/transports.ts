@@ -166,3 +166,20 @@ export function awsCloudWatchTransport({
     retentionInDays: retentionInDays,
   });
 }
+
+/**
+ * Raw JSON console stdout
+ *
+ * @example info: testing info {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
+ *
+ * @param minimumLogLevel all logs with this severity and above
+ * will be enabled; default is Info
+ */
+export function rawJSONConsoleTransport(
+  minimumLogLevel: LogLevel = LogLevel.Info
+): ConsoleTransportInstance {
+  return new winston.transports.Console({
+    level: LogLevel[minimumLogLevel].toLowerCase(),
+    format: winston.format.json(),
+  });
+}
