@@ -17,7 +17,7 @@ import { newLogger, getTransports } from './helpers';
 import {
   simpleConsoleConfig,
   colorizedConsoleConfig,
-  rawJSONConsole,
+  rawJSONConsoleConfig,
 } from './configs';
 import { LoggerError } from './errors';
 
@@ -34,7 +34,7 @@ let logger: winston.Logger;
 function initLogger(appName: string, options?: LoggerOptions): void {
   const transports = options?.environments
     ? getTransports(appName, options.environments)
-    : getTransports(appName, rawJSONConsole());
+    : getTransports(appName, rawJSONConsoleConfig());
 
   logger = newLogger(appName, transports);
 
@@ -127,14 +127,12 @@ function logError(
   });
 }
 
-//
 // Test Only
-//
 
 // CASE 0: Default
 // initLogger('sg-node-logger');
 
-// CASE 1: Simple Console
+// // CASE 1: Simple Console
 // const loggerOptions = {
 //   environments: [
 //     {
@@ -299,7 +297,7 @@ export {
   // pre-defined configs - more coming soon
   colorizedConsoleConfig,
   simpleConsoleConfig,
-  rawJSONConsole,
+  rawJSONConsoleConfig,
   // helper functions
   logDebug,
   logVerbose,

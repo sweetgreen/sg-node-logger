@@ -170,7 +170,7 @@ export function awsCloudWatchTransport({
 /**
  * Raw JSON console stdout
  *
- * @example info: testing info {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
+ * @example info: testing info {"environment":"development","appName":"sg-node-logger","data":{"a":"jfkkjflsd","b":137843},"level":"info","message":"testing info","timestamp":"2020-12-11T19:57:17.120Z"}
  *
  * @param minimumLogLevel all logs with this severity and above
  * will be enabled; default is Info

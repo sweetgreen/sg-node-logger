@@ -114,7 +114,7 @@ export function colorizedConsoleConfig(): EnvironmentConfig[] {
  * - Production: RawJSONConsole - Info
  * - PreProduction: RawJSONConsole - Info
  */
-export function rawJSONConsole(): EnvironmentConfig[] {
+export function rawJSONConsoleConfig(): EnvironmentConfig[] {
   return [
     {
       nodeEnvironmentName: Environment.Production,
