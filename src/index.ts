@@ -7,7 +7,7 @@ import winston from 'winston';
 import {
   AwsCloudWatchTransportConfig,
   SimpleConsoleTransportConfig,
-  PrettyConsoleTransportConfig,
+  ColorizedConsoleTransportConfig,
   RawJSONConsoleTransportConfig,
   LogEntry,
   LoggerOptions,
@@ -16,7 +16,7 @@ import {
 import { newLogger, getTransports } from './helpers';
 import {
   simpleConsoleConfig,
-  prettyConsoleConfig,
+  colorizedConsoleConfig,
   rawJSONConsole,
 } from './configs';
 import { LoggerError } from './errors';
@@ -161,26 +161,26 @@ function logError(
 // };
 // initLogger('sg-node-logger', loggerOptions);
 
-// // CASE 2: Pretty Console
+// // CASE 2: Colorized Console
 // const loggerOptions = {
 //   environments: [
 //     {
 //       nodeEnvironmentName: 'production',
 //       transports: {
-//         prettyConsole: [
+//         colorizedConsole: [
 //           {
 //             minimumLogLevel: LogLevel.Info,
-//           } as PrettyConsoleTransportConfig,
+//           } as ColorizedConsoleTransportConfig,
 //         ],
 //       },
 //     },
 //     {
 //       nodeEnvironmentName: 'development',
 //       transports: {
-//         prettyConsole: [
+//         colorizedConsole: [
 //           {
 //             minimumLogLevel: LogLevel.Info,
-//           } as PrettyConsoleTransportConfig,
+//           } as ColorizedConsoleTransportConfig,
 //         ],
 //       },
 //     },
@@ -208,7 +208,7 @@ function logError(
 //       transports: [
 //         {
 //           minimumLogLevel: LogLevel.Debug,
-//         } as PrettyConsoleTransportConfig,
+//         } as ColorizedConsoleTransportConfig,
 //       ],
 //     },
 //   ],
@@ -237,10 +237,10 @@ function logError(
 //     {
 //       nodeEnvironmentName: 'development',
 //       transports: {
-//         prettyConsole: [
+//         colorizedConsole: [
 //           {
 //             minimumLogLevel: LogLevel.Info,
-//           } as PrettyConsoleTransportConfig,
+//           } as ColorizedConsoleTransportConfig,
 //         ],
 //       },
 //     },
@@ -259,10 +259,10 @@ function logError(
 //             minimumLogLevel: LogLevel.Info,
 //           } as SimpleConsoleTransportConfig,
 //         ],
-//         prettyConsole: [
+//         colorizedConsole: [
 //           {
 //             minimumLogLevel: LogLevel.Info,
-//           } as PrettyConsoleTransportConfig,
+//           } as ColorizedConsoleTransportConfig,
 //         ],
 //         awsCloudWatch: [
 //           {
@@ -293,11 +293,11 @@ export {
   // interfaces
   LoggerOptions,
   SimpleConsoleTransportConfig,
-  PrettyConsoleTransportConfig,
+  ColorizedConsoleTransportConfig,
   AwsCloudWatchTransportConfig,
   RawJSONConsoleTransportConfig,
   // pre-defined configs - more coming soon
-  prettyConsoleConfig,
+  colorizedConsoleConfig,
   simpleConsoleConfig,
   rawJSONConsole,
   // helper functions

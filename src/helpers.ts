@@ -8,11 +8,11 @@ import {
 } from './types';
 import {
   awsCloudWatchTransport,
-  prettyConsoleTransport,
+  colorizedConsoleTransport,
   simpleConsoleTransport,
   rawJSONConsoleTransport,
 } from './transports';
-import { prettyConsoleConfig } from './configs';
+import { colorizedConsoleConfig } from './configs';
 import {
   ConfigurationLoggerError,
   EnvironmentVariableLoggerError,
@@ -42,7 +42,7 @@ export function newLogger(
  * New instance of the logger using default transports
  */
 export function defaultLogger(appName: string): winston.Logger {
-  const transports = getTransports(appName, prettyConsoleConfig());
+  const transports = getTransports(appName, colorizedConsoleConfig());
 
   return newLogger(appName, transports);
 }
@@ -87,8 +87,8 @@ export function getTransports(
       environmentTransports.rawJSONConsole.length === 0) &&
     (!environmentTransports.simpleConsole ||
       environmentTransports.simpleConsole.length === 0) &&
-    (!environmentTransports.prettyConsole ||
-      environmentTransports.prettyConsole.length === 0) &&
+    (!environmentTransports.colorizedConsole ||
+      environmentTransports.colorizedConsole.length === 0) &&
     (!environmentTransports.awsCloudWatch ||
       environmentTransports.awsCloudWatch.length === 0)
   ) {
@@ -112,13 +112,13 @@ export function getTransports(
     });
   }
 
-  // Pretty Console Transport
+  // Colorized Console Transport
   if (
-    environmentTransports.prettyConsole &&
-    environmentTransports.prettyConsole.length > 0
+    environmentTransports.colorizedConsole &&
+    environmentTransports.colorizedConsole.length > 0
   ) {
-    environmentTransports.prettyConsole.forEach((transport) => {
-      transports.push(prettyConsoleTransport(transport.minimumLogLevel));
+    environmentTransports.colorizedConsole.forEach((transport) => {
+      transports.push(colorizedConsoleTransport(transport.minimumLogLevel));
     });
   }
 

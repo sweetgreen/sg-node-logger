@@ -31,7 +31,7 @@ export function simpleConsoleTransport(
  * @param minimumLogLevel all logs with this severity and above
  * will be enabled; default is Info
  */
-export function prettyConsoleTransport(
+export function colorizedConsoleTransport(
   minimumLogLevel: LogLevel = LogLevel.Info
 ): ConsoleTransportInstance {
   const formatting = winston.format.combine(

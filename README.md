@@ -16,7 +16,7 @@
   - Useful when logs are not needed (ie, unit tests)
 - AWS CloudWatch - auto manage rate-limiting (this may go away with the introduction of the DataDog transport)
 
-## Vision 
+## Vision
 
 - Speed up the development of applications without worrying about the logging frameworks
 - Make it dead simple to use
@@ -62,6 +62,7 @@ npm i @sweetgreen/sg-node-logger
 ### Environment Variables
 
 The following environment variables are used by the package:
+
 - `NODE_ENV`
   - Assigns logger transports based on the environment value
 
@@ -93,7 +94,7 @@ import {
   logVerbose,
   logInfo,
   logWarn,
-  logError
+  logError,
 } from '@sweetgreen/sg-node-logger';
 
 initLogger('application-name');
@@ -116,7 +117,7 @@ initLogger('application-name');
 const customData = {
   a: 'some string',
   b: 12345,
-}
+};
 
 logDebug('Debug message', customData);
 ```
@@ -152,6 +153,7 @@ try {
 #### Default Configuration
 
 This code is using the default configuration under the hood
+
 ```js
 import { initLogger, logDebug } from '@sweetgreen/sg-node-logger';
 
@@ -160,27 +162,28 @@ initLogger('application-name');
 logDebug('Debug message');
 ```
 
-Details of the default configuration (for the latest configuration checkout the function `prettyConsoleConfig()` in the `configs.ts` file):
+Details of the default configuration (for the latest configuration checkout the function `colorizedConsoleConfig()` in the `configs.ts` file):
+
 ```js
 {
   environments: [
     {
       nodeEnvName: Environment.Production,
       transports: {
-        prettyConsole: [
+        colorizedConsole: [
           {
             minimumLogLevel: LogLevel.Info,
-          } as PrettyConsoleTransportConfig,
+          } as ColorizedConsoleTransportConfig,
         ],
       },
     },
     {
       nodeEnvName: Environment.Development,
       transports: {
-        prettyConsole: [
+        colorizedConsole: [
           {
             minimumLogLevel: LogLevel.Info,
-          } as PrettyConsoleTransportConfig,
+          } as ColorizedConsoleTransportConfig,
         ],
       },
     },
@@ -195,7 +198,11 @@ Details of the default configuration (for the latest configuration checkout the 
 - Pre-defined configurations will be added over time to make it as simple as possible to use and to keep the code clean and clear from file based configuration.
 
 ```js
-import { initLogger, aPredefinedConfig, logDebug } from '@sweetgreen/sg-node-logger';
+import {
+  initLogger,
+  aPredefinedConfig,
+  logDebug,
+} from '@sweetgreen/sg-node-logger';
 
 // Keep the configuration close to the application's entry point
 initLogger('application-name', aPredefinedConfig);
@@ -209,7 +216,7 @@ logDebug('Debug message');
 import {
   LoggerOptions,
   SimpleConsoleTransportConfig,
-  PrettyConsoleTransportConfig,
+  ColorizedConsoleTransportConfig,
   AwsCloudWatchTransportConfig,
   Transport,
   LogLevel,
@@ -223,10 +230,10 @@ const loggerOptions: LoggerOptions = {
       {
         nodeEnvironmentName: 'production',
         transports: {
-          prettyConsole: [
+          colorizedConsole: [
             {
               minimumLogLevel: LogLevel.Verbose,
-            } as PrettyConsoleTransportConfig,
+            } as ColorizedConsoleTransportConfig,
           ],
           awsCloudWatch: [
             {
@@ -265,7 +272,7 @@ logDebug('Debug message');
 import {
   LoggerOptions,
   SimpleConsoleTransportConfig,
-  PrettyConsoleTransportConfig,
+  ColorizedConsoleTransportConfig,
   AwsCloudwatchTransportConfig,
 } from '@sweetgreen/sg-node-logger';
 
@@ -280,10 +287,10 @@ const loggerOptions: LoggerOptions = {
               // configuration goes here
             } as SimpleConsoleTransportConfig,
           ],
-          prettyConsole: [
+          colorizedConsole: [
             {
               // configuration goes here
-            } as PrettyConsoleTransportConfig,
+            } as ColorizedConsoleTransportConfig,
           ],
           awsCloudWatch: [
             {
@@ -309,9 +316,9 @@ warn: testing warn {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
 error: testing error {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
 ```
 
-### PrettyConsole
+### ColorizedConsole
 
-![PrettyConsole](/assets/pretty-transport-1.png)
+![ColorizedConsole](/assets/pretty-transport-1.png)
 
 ### AwsCloudwatch
 
@@ -337,6 +344,7 @@ error: testing error {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
     - Default is `150` days
 
 Example full custom configuration - typical,
+
 ```ts
 import {
   AwsCloudwatchTransportConfig,
@@ -356,12 +364,12 @@ const loggerOptions: LoggerOptions = {
             {
               // Optional: defaults to Info
               minimumLogLevel: LogLevel.Info,
-              
+
               awsRegion: 'us-east-1',
 
               logGroupName: '/HelloWorldService/Production',
 
-              // Optional: both access and secret must be passed, otherwise 
+              // Optional: both access and secret must be passed, otherwise
               // it throws an error.
               // Make sure both are empty/undefined to use the '~/.aws/credentials' file.
               accessKeyId: '<aws-access-key-id>',
@@ -387,6 +395,7 @@ logDebug('Debug message');
 ```
 
 Example using `~/.aws/credentials` + using default values,
+
 ```ts
 import {
   AwsCloudwatchTransportConfig,
@@ -418,7 +427,9 @@ initLogger('application-name', loggerOptions);
 
 logDebug('Debug message');
 ```
+
 With this option, the following defaults will be used:
+
 - `minimumLogLevel` will be default `LogLevel.Info`
 - `accessKeyId` and `secretAccessKey` are empty, therefore `~/.aws/credentials` will be used
 - `uploadRateInMilliseconds` will use the default `10000` ms - 10 seconds
@@ -429,9 +440,11 @@ With this option, the following defaults will be used:
 ### Environemnt Variables
 
 The following environment variables are used in the project:
+
 - NODE_ENV
 
 Use the `.env` file for testing different environments
+
 ```sh
 # .env file
 
