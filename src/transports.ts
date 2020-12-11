@@ -31,7 +31,7 @@ export function simpleConsoleTransport(
  * @param minimumLogLevel all logs with this severity and above
  * will be enabled; default is Info
  */
-export function prettyConsoleTransport(
+export function colorizedConsoleTransport(
   minimumLogLevel: LogLevel = LogLevel.Info
 ): ConsoleTransportInstance {
   const formatting = winston.format.combine(
@@ -164,5 +164,21 @@ export function awsCloudWatchTransport({
     jsonMessage: true,
     uploadRate: uploadRateInMilliseconds,
     retentionInDays: retentionInDays,
+  });
+}
+
+/**
+ * Raw JSON console stdout
+ *
+ * @example info: testing info {"environment":"development","appName":"sg-node-logger","data":{"a":"jfkkjflsd","b":137843},"level":"info","message":"testing info","timestamp":"2020-12-11T19:57:17.120Z"}
+ *
+ * @param minimumLogLevel all logs with this severity and above
+ * will be enabled; default is Info
+ */
+export function rawJSONConsoleTransport(
+  minimumLogLevel: LogLevel = LogLevel.Info
+): ConsoleTransportInstance {
+  return new winston.transports.Console({
+    level: LogLevel[minimumLogLevel].toLowerCase(),
   });
 }

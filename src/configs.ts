@@ -1,8 +1,9 @@
+import { RawJSONConsoleTransportConfig } from '.';
 import {
   Environment,
   LogLevel,
   EnvironmentConfig,
-  PrettyConsoleTransportConfig,
+  ColorizedConsoleTransportConfig,
   SimpleConsoleTransportConfig,
 } from './types';
 
@@ -10,8 +11,8 @@ import {
  * Predefined configuration using simple consoles in all environments
  *
  * Setup
- * - Production: PrettyConsole - Info
- * - PreProduction: PrettyConsole - Info
+ * - Production: ColorizedConsole - Info
+ * - PreProduction: ColorizedConsole - Info
  */
 export function simpleConsoleConfig(): EnvironmentConfig[] {
   return [
@@ -39,31 +40,31 @@ export function simpleConsoleConfig(): EnvironmentConfig[] {
 }
 
 /**
- * Predefined configuration using pretty consoles in all environments
+ * Predefined configuration using colorized consoles in all environments
  *
  * Setup
- * - Production: PrettyConsole - Info
- * - PreProduction: PrettyConsole - Info
+ * - Production: ColorizedConsole - Info
+ * - PreProduction: ColorizedConsole - Info
  */
-export function prettyConsoleConfig(): EnvironmentConfig[] {
+export function colorizedConsoleConfig(): EnvironmentConfig[] {
   return [
     {
       nodeEnvironmentName: Environment.Production,
       transports: {
-        prettyConsole: [
+        colorizedConsole: [
           {
             minimumLogLevel: LogLevel.Info,
-          } as PrettyConsoleTransportConfig,
+          } as ColorizedConsoleTransportConfig,
         ],
       },
     },
     {
       nodeEnvironmentName: Environment.Development,
       transports: {
-        prettyConsole: [
+        colorizedConsole: [
           {
             minimumLogLevel: LogLevel.Info,
-          } as PrettyConsoleTransportConfig,
+          } as ColorizedConsoleTransportConfig,
         ],
       },
     },
@@ -75,7 +76,7 @@ export function prettyConsoleConfig(): EnvironmentConfig[] {
 //  *
 //  * Setup:
 //  * - Production: AwsCloudWatch - Info
-//  * - PreProduction: PrettyConsole - Info
+//  * - PreProduction: ColorizedConsole - Info
 //  */
 // export function simplePredefinedConfig(): EnvironmentConfig[] {
 //   return [
@@ -100,8 +101,40 @@ export function prettyConsoleConfig(): EnvironmentConfig[] {
 //       transports: [
 //         {
 //           minimumLogLevel: LogLevel.Info,
-//         } as PrettyConsoleConfig,
+//         } as ColorizedConsoleConfig,
 //       ],
 //     },
 //   ];
 // }
+
+/**
+ * Predefined configuration using raw JSON consoles in all environments
+ *
+ * Setup
+ * - Production: RawJSONConsole - Info
+ * - PreProduction: RawJSONConsole - Info
+ */
+export function rawJSONConsoleConfig(): EnvironmentConfig[] {
+  return [
+    {
+      nodeEnvironmentName: Environment.Production,
+      transports: {
+        rawJSONConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as RawJSONConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.Development,
+      transports: {
+        rawJSONConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as RawJSONConsoleTransportConfig,
+        ],
+      },
+    },
+  ];
+}

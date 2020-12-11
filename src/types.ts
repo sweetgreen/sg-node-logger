@@ -48,8 +48,9 @@ export interface EnvironmentConfig {
 
 export interface TransportConfig {
   simpleConsole?: SimpleConsoleTransportConfig[];
-  prettyConsole?: PrettyConsoleTransportConfig[];
+  colorizedConsole?: ColorizedConsoleTransportConfig[];
   awsCloudWatch?: AwsCloudWatchTransportConfig[];
+  rawJSONConsole?: RawJSONConsoleTransportConfig[];
 }
 
 export interface TransportConfigBase {
@@ -58,7 +59,7 @@ export interface TransportConfigBase {
 
 export interface SimpleConsoleTransportConfig extends TransportConfigBase {}
 
-export interface PrettyConsoleTransportConfig extends TransportConfigBase {}
+export interface ColorizedConsoleTransportConfig extends TransportConfigBase {}
 
 export interface AwsCloudWatchTransportConfig extends TransportConfigBase {
   awsRegion: string;
@@ -68,6 +69,8 @@ export interface AwsCloudWatchTransportConfig extends TransportConfigBase {
   uploadRateInMilliseconds?: number;
   retentionInDays?: number;
 }
+
+export interface RawJSONConsoleTransportConfig extends TransportConfigBase {}
 
 //
 // LOG
