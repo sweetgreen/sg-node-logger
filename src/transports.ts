@@ -180,6 +180,5 @@ export function rawJSONConsoleTransport(
 ): ConsoleTransportInstance {
   return new winston.transports.Console({
     level: LogLevel[minimumLogLevel].toLowerCase(),
-    format: winston.format.json(),
   });
 }
