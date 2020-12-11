@@ -32,6 +32,40 @@
 
 ## Getting Started
 
+### Log Shape
+
+```ts
+{
+  // Provided by application/user
+  // - changes from log to log
+  logLevel: LogLevel;
+  message: string;
+  tags?: string[];
+  data?: any;
+  errorMessage?: string;
+  errorStack?: string;
+
+  // Dynamic Metadata
+  // - susceptible to change from log to log
+  utcTimestamp?: string;
+  sessionId?: string;
+  correlationId?: string;
+  requestId?: string;
+
+  // Static Metadata
+  // - values are set once during startup
+  // - does not change from log to log
+  appName?: string;
+  appVersion?: string;
+  environment?: string;
+  hostname?: string;
+  ipaddress?: string;
+  os?: string;
+  osVersion?: string;
+  osBuildNumber?: string;
+}
+```
+
 ### Prerequisites
 
 - Add github package registry to your project
