@@ -1,3 +1,17 @@
+# [1.6.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.5.0...v1.6.0) (2020-12-12)
+
+
+### Bug Fixes
+
+* **dangerfile:** remove unecessary checks ([6997a06](https://github.com/sweetgreen/sg-node-logger/commit/6997a06921e518feeb4f85ba301bad145f51f7fb))
+* **package.json:** remove unnecessary package ([e439131](https://github.com/sweetgreen/sg-node-logger/commit/e4391315a363b310f7051ac6eb0114294d060c4a))
+
+
+### Features
+
+* **ca-355:** implement DangerJS ([1778a4a](https://github.com/sweetgreen/sg-node-logger/commit/1778a4a5088e590366054eb856ec2dd180adc10b))
+* **raw json transport:** added simple raw JSON transport ([a941537](https://github.com/sweetgreen/sg-node-logger/commit/a941537d749013252508d044587e7363b918f981))
+
 # [1.5.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.4.0...v1.5.0) (2020-12-02)
 
 
