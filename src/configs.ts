@@ -36,6 +36,17 @@ export function simpleConsoleConfig(): EnvironmentConfig[] {
         ],
       },
     },
+    {
+      nodeEnvironmentName: Environment.Local,
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as SimpleConsoleTransportConfig,
+        ],
+      },
+    },
+    ,
   ];
 }
 
@@ -60,6 +71,16 @@ export function colorizedConsoleConfig(): EnvironmentConfig[] {
     },
     {
       nodeEnvironmentName: Environment.Development,
+      transports: {
+        colorizedConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as ColorizedConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.Local,
       transports: {
         colorizedConsole: [
           {
