@@ -36,6 +36,36 @@ export function simpleConsoleConfig(): EnvironmentConfig[] {
         ],
       },
     },
+    {
+      nodeEnvironmentName: Environment.Staging,
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as SimpleConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.RC1,
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as SimpleConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.Local,
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as SimpleConsoleTransportConfig,
+        ],
+      },
+    },
   ];
 }
 
@@ -62,6 +92,36 @@ export function colorizedConsoleConfig(): EnvironmentConfig[] {
       nodeEnvironmentName: Environment.Development,
       transports: {
         colorizedConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as ColorizedConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.Staging,
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as ColorizedConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.RC1,
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as ColorizedConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.Local,
+      transports: {
+        simpleConsole: [
           {
             minimumLogLevel: LogLevel.Info,
           } as ColorizedConsoleTransportConfig,
@@ -130,6 +190,36 @@ export function rawJSONConsoleConfig(): EnvironmentConfig[] {
       nodeEnvironmentName: Environment.Development,
       transports: {
         rawJSONConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as RawJSONConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.Staging,
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as RawJSONConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.RC1,
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as RawJSONConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.Local,
+      transports: {
+        simpleConsole: [
           {
             minimumLogLevel: LogLevel.Info,
           } as RawJSONConsoleTransportConfig,

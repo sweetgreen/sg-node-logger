@@ -8,8 +8,11 @@ export type Option<T> = T | undefined;
  * Default environments and meant to be used internally in this module.
  */
 export enum Environment {
+  Local = 'local',
   Production = 'production',
   Development = 'development',
+  Staging = 'staging',
+  RC1 = 'rc-1',
 }
 
 /**
