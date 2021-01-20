@@ -37,6 +37,26 @@ export function simpleConsoleConfig(): EnvironmentConfig[] {
       },
     },
     {
+      nodeEnvironmentName: Environment.Staging,
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as SimpleConsoleTransportConfig,
+        ],
+      },
+    },
+    {
+      nodeEnvironmentName: Environment.RC1,
+      transports: {
+        simpleConsole: [
+          {
+            minimumLogLevel: LogLevel.Info,
+          } as SimpleConsoleTransportConfig,
+        ],
+      },
+    },
+    {
       nodeEnvironmentName: Environment.Local,
       transports: {
         simpleConsole: [
@@ -46,7 +66,6 @@ export function simpleConsoleConfig(): EnvironmentConfig[] {
         ],
       },
     },
-    ,
   ];
 }
 
