@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.0...v1.7.1) (2021-01-21)
+
+
+### Bug Fixes
+
+* **usage of node_env:** ignore node_env when using the library out of the box ([8421c9f](https://github.com/sweetgreen/sg-node-logger/commit/8421c9f57260ad1afe7ae3e79ea8b9b132bde47f))
+
 # [1.7.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.6.0...v1.7.0) (2021-01-21)
 
 
