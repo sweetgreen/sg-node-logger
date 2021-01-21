@@ -1,3 +1,12 @@
+# [1.7.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.6.0...v1.7.0) (2021-01-21)
+
+
+### Features
+
+* **env:** Add 'local' env ([93df642](https://github.com/sweetgreen/sg-node-logger/commit/93df642b8bd29bdfff1e75eb1f913e9f14f4d3ff))
+* **node envs:** add staging and rc-1 ([e64068d](https://github.com/sweetgreen/sg-node-logger/commit/e64068dacb9452288bce0ffd6349dff7523ee1ef))
+* **node envs:** update rawjson ([b336013](https://github.com/sweetgreen/sg-node-logger/commit/b3360134211a4eb52d651a019a8cc0430eebd5c8))
+
 # [1.6.0](https://github.com/sweetgreen/sg-node-logger/compare/v1.5.0...v1.6.0) (2020-12-12)
 
 
