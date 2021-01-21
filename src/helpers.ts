@@ -5,6 +5,7 @@ import {
   EnvironmentConfig,
   StaticLogMetadata,
   AwsCloudWatchTransportConfig,
+  Environment,
 } from './types';
 import {
   awsCloudWatchTransport,
@@ -12,7 +13,6 @@ import {
   simpleConsoleTransport,
   rawJSONConsoleTransport,
 } from './transports';
-import { colorizedConsoleConfig } from './configs';
 import {
   ConfigurationLoggerError,
   EnvironmentVariableLoggerError,
@@ -39,63 +39,38 @@ export function newLogger(
 }
 
 /**
- * New instance of the logger using default transports
- */
-export function defaultLogger(appName: string): winston.Logger {
-  const transports = getTransports(appName, colorizedConsoleConfig());
-
-  return newLogger(appName, transports);
-}
-
-/**
- * Converts transport configurations to concrete transports
+ * Converts transport configurations to concrete transports.
  *
+ * @param appName the application name
  * @param environmentConfigs the options to convert
+ * @param enableValidation validates NODE_ENV and configurations - ENABLE when using custom config
  */
 export function getTransports(
   appName: string,
-  environmentConfigs: EnvironmentConfig[]
+  environmentConfigs: EnvironmentConfig[],
+  enableValidation = false
 ): winston.transport[] {
-  const nodeEnv: Option<string> = process.env.NODE_ENV?.trim().toLowerCase();
+  let environmentConfigList: EnvironmentConfig[];
 
-  if (!nodeEnv) {
-    throw new EnvironmentVariableLoggerError('NODE_ENV variable must be set');
-  }
+  if (enableValidation) {
+    // Custom Config
+    const nodeEnv: Option<string> = process.env.NODE_ENV?.trim().toLowerCase();
 
-  // Find the config for the current environment
-  const environments = environmentConfigs.filter(
-    (env) => env.nodeEnvironmentName.trim().toLowerCase() === nodeEnv
-  );
+    validate(environmentConfigs, nodeEnv);
 
-  if (environments.length === 0) {
-    throw new ConfigurationLoggerError(
-      `There is no configuration for the '${nodeEnv}' environment.`
+    environmentConfigList = environmentConfigs.filter(
+      (env) => env.nodeEnvironmentName.trim().toLowerCase() === nodeEnv
+    );
+  } else {
+    // Out of the box config
+    const nodeEnv: Option<string> = Environment.All;
+
+    environmentConfigList = environmentConfigs.filter(
+      (env) => env.nodeEnvironmentName.trim().toLowerCase() === nodeEnv
     );
   }
 
-  if (environments.length > 1) {
-    throw new ConfigurationLoggerError(
-      `There are multiple configurations for the '${nodeEnv}' environment.`
-    );
-  }
-
-  const environmentTransports = environments[0].transports;
-
-  // At least one transport must be configured
-  if (
-    (!environmentTransports.rawJSONConsole ||
-      environmentTransports.rawJSONConsole.length === 0) &&
-    (!environmentTransports.simpleConsole ||
-      environmentTransports.simpleConsole.length === 0) &&
-    (!environmentTransports.colorizedConsole ||
-      environmentTransports.colorizedConsole.length === 0) &&
-    (!environmentTransports.awsCloudWatch ||
-      environmentTransports.awsCloudWatch.length === 0)
-  ) {
-    throw new ConfigurationLoggerError(
-      `At least one transport must be configured for the '${nodeEnv}' environment.`
-    );
-  }
+  const environmentTransports = environmentConfigList[0].transports;
 
   const transports: winston.transport[] = [];
 
@@ -153,4 +128,54 @@ export function getTransports(
   }
 
   return transports;
+}
+
+/**
+ * Validates the NODE_ENV and configuration ONLY when custom configuration is present.
+ *
+ * @param environmentConfigs the logger configuration
+ * @param environmentName the current environment name
+ */
+function validate(
+  environmentConfigs: EnvironmentConfig[],
+  environmentName?: string
+): void {
+  if (!environmentName) {
+    throw new EnvironmentVariableLoggerError('NODE_ENV variable must be set');
+  }
+
+  // Find the config for the current environment
+  const environments = environmentConfigs.filter(
+    (env) => env.nodeEnvironmentName.trim().toLowerCase() === environmentName
+  );
+
+  if (environments.length === 0) {
+    throw new ConfigurationLoggerError(
+      `There is no configuration for the '${environmentName}' environment.`
+    );
+  }
+
+  if (environments.length > 1) {
+    throw new ConfigurationLoggerError(
+      `There are multiple configurations for the '${environmentName}' environment.`
+    );
+  }
+
+  const environmentTransports = environments[0].transports;
+
+  // At least one transport must be configured
+  if (
+    (!environmentTransports.rawJSONConsole ||
+      environmentTransports.rawJSONConsole.length === 0) &&
+    (!environmentTransports.simpleConsole ||
+      environmentTransports.simpleConsole.length === 0) &&
+    (!environmentTransports.colorizedConsole ||
+      environmentTransports.colorizedConsole.length === 0) &&
+    (!environmentTransports.awsCloudWatch ||
+      environmentTransports.awsCloudWatch.length === 0)
+  ) {
+    throw new ConfigurationLoggerError(
+      `At least one transport must be configured for the '${environmentName}' environment.`
+    );
+  }
 }

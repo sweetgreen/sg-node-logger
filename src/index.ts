@@ -33,7 +33,7 @@ let logger: winston.Logger;
  */
 function initLogger(appName: string, options?: LoggerOptions): void {
   const transports = options?.environments
-    ? getTransports(appName, options.environments)
+    ? getTransports(appName, options.environments, true)
     : getTransports(appName, rawJSONConsoleConfig());
 
   logger = newLogger(appName, transports);
@@ -129,7 +129,7 @@ function logError(
 
 // Test Only
 
-// CASE 0: Default
+// // CASE 0: Default
 // initLogger('sg-node-logger');
 
 // // CASE 1: Simple Console
@@ -246,7 +246,7 @@ function logError(
 // };
 // initLogger('sg-node-logger', loggerOptions);
 
-// // CASE 4: Run all transports
+// // CASE 5: Run all transports
 // const loggerOptions = {
 //   environments: [
 //     {
@@ -270,6 +270,33 @@ function logError(
 //             uploadRateInMilliseconds: 1000,
 //             retentionInDays: 14,
 //           } as AwsCloudWatchTransportConfig,
+//         ],
+//       },
+//     },
+//   ],
+// };
+// initLogger('sg-node-logger', loggerOptions);
+
+// // CASE 6: Raw Json
+// const loggerOptions = {
+//   environments: [
+//     {
+//       nodeEnvironmentName: 'production',
+//       transports: {
+//         rawJSONConsole: [
+//           {
+//             minimumLogLevel: LogLevel.Info,
+//           } as RawJSONConsoleTransportConfig,
+//         ],
+//       },
+//     },
+//     {
+//       nodeEnvironmentName: 'development',
+//       transports: {
+//         rawJSONConsole: [
+//           {
+//             minimumLogLevel: LogLevel.Info,
+//           } as RawJSONConsoleTransportConfig,
 //         ],
 //       },
 //     },

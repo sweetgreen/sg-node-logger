@@ -26,9 +26,8 @@
 
 ## Warning
 
-> **We cannot stress this enough. Do NOT log PII or any sensitive information.**
->
-> **For any questions, contact our friendly cyber-security team.**
+> We cannot stress this enough. Do NOT log PII or any sensitive information.
+> For any questions, contact our friendly cyber-security team.
 
 ## Getting Started
 
@@ -98,7 +97,10 @@ npm i @sweetgreen/sg-node-logger
 The following environment variables are used by the package:
 
 - `NODE_ENV`
+  - ONLY when specifying a custom configuration
   - Assigns logger transports based on the environment value
+
+`NODE_ENV` is ignored when using the library out of the box. Meaning, when a custom configuration is not passed to the initializer (`initLogger()`).
 
 ## Usage
 
@@ -110,7 +112,8 @@ const { logDebug, initLogger } = require('@sweetgreen/sg-node-logger');
 import { logDebug, initLogger } from '@sweetgreen/sg-node-logger';
 
 // Initialize logger once and only once
-// subsequent usage of `logDebug` does NOT need to be paired with `initLogger()`
+// NOTE: Subsequent usage of `logDebug` does NOT need to be paired with `initLogger()`.
+// NOTE: This simple out of the box usage style does not require the presence of `NODE_ENV`.
 initLogger('application-name');
 
 // Log away
@@ -196,28 +199,18 @@ initLogger('application-name');
 logDebug('Debug message');
 ```
 
-Details of the default configuration (for the latest configuration checkout the function `colorizedConsoleConfig()` in the `configs.ts` file):
+Details of the default configuration (for the latest configuration checkout the function `rawJSONConsoleConfig()` in the `configs.ts` file):
 
 ```js
 {
   environments: [
     {
-      nodeEnvName: Environment.Production,
+      nodeEnvName: Environment.All,
       transports: {
-        colorizedConsole: [
+        rawJSONConsole: [
           {
             minimumLogLevel: LogLevel.Info,
-          } as ColorizedConsoleTransportConfig,
-        ],
-      },
-    },
-    {
-      nodeEnvName: Environment.Development,
-      transports: {
-        colorizedConsole: [
-          {
-            minimumLogLevel: LogLevel.Info,
-          } as ColorizedConsoleTransportConfig,
+          } as RawJSONConsoleTransportConfig,
         ],
       },
     },
@@ -225,9 +218,9 @@ Details of the default configuration (for the latest configuration checkout the 
 }
 ```
 
-- Note that "production" and "development" NODE_ENV values will be used if using the default configuration. Ensure to adjust your NODE_ENV environment values accordingly.
+- This configuration is used across all environments (`Environment.All`)
 
-#### Pre-Defined Configurations (future plan)
+#### Pre-Defined Configurations
 
 - Pre-defined configurations will be added over time to make it as simple as possible to use and to keep the code clean and clear from file based configuration.
 
@@ -290,13 +283,13 @@ const loggerOptions: LoggerOptions = {
   };
 }
 
-// Keep the configuration close to the application's entry point
+// Keep the initializer close to the application's entry point
 initLogger('application-name', loggerOptions);
 
 logDebug('Debug message');
 ```
 
-- `nodeEnvironmentName` can be any value that your application uses in its lifecycle ('prod' vs. 'production', 'dev' vs. 'develop', etc) when using the custom configuration.
+- `nodeEnvironmentName` can be any value that your application uses in its lifecycle ('prod', 'production', 'dev', 'develop', etc) when using the custom configuration.
 
 ## Transports
 
@@ -334,6 +327,11 @@ const loggerOptions: LoggerOptions = {
               // same transports can be repeated
             } as AwsCloudwatchTransportConfig,
           ],
+          rawJSONConsole: [
+            {
+              // configuration goes here
+            } as RawJSONConsoleTransportConfig,
+          ]
         },
       },
     ],
@@ -353,6 +351,15 @@ error: testing error {"data":{},"timestamp":"2020-11-21T06:24:06.048Z"}
 ### ColorizedConsole
 
 ![ColorizedConsole](/assets/pretty-transport-1.png)
+
+### RawJSONConsole
+
+```
+{"environment":"production","appName":"sg-node-logger","tags":["startup"],"level":"warn","message":"Verify PII is removed from all logs! Application security is everyone's responsibility.","timestamp":"2021-01-21T17:41:28.365Z"}
+{"environment":"production","appName":"sg-node-logger","data":{"a":"jfkkjflsd","b":137843},"level":"info","message":"testing info","timestamp":"2021-01-21T17:41:28.367Z"}
+{"environment":"production","appName":"sg-node-logger","tags":["tag1","tag2"],"level":"warn","message":"testing warn","timestamp":"2021-01-21T17:41:28.367Z"}
+{"environment":"production","appName":"sg-node-logger","level":"error","message":"testing error","timestamp":"2021-01-21T17:41:28.367Z"}
+```
 
 ### AwsCloudwatch
 
@@ -468,23 +475,6 @@ With this option, the following defaults will be used:
 - `accessKeyId` and `secretAccessKey` are empty, therefore `~/.aws/credentials` will be used
 - `uploadRateInMilliseconds` will use the default `10000` ms - 10 seconds
 - `retentionInDays` will use the default `180` days
-
-## Development
-
-### Environemnt Variables
-
-The following environment variables are used in the project:
-
-- NODE_ENV
-
-Use the `.env` file for testing different environments
-
-```sh
-# .env file
-
-# Reference the Environment enum for correct values
-NODE_ENV=production|development|etc
-```
 
 ## Contributing
 
