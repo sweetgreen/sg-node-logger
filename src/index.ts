@@ -37,13 +37,6 @@ function initLogger(appName: string, options?: LoggerOptions): void {
     : getTransports(appName, rawJSONConsoleConfig());
 
   logger = newLogger(appName, transports);
-
-  // PII Warning
-  logWarn(
-    `Verify PII is removed from all logs! Application security is everyone's responsibility.`,
-    undefined,
-    ['startup']
-  );
 }
 
 /**
