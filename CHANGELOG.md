@@ -1,3 +1,12 @@
+## [1.7.2](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.1...v1.7.2) (2021-02-23)
+
+
+### Bug Fixes
+
+* **gh-actions:** add GH_TOKEN ([8630554](https://github.com/sweetgreen/sg-node-logger/commit/8630554466148596fe731d0e5a049061af4d0235))
+* **gh-actions:** use GH_TOKEN ([4572531](https://github.com/sweetgreen/sg-node-logger/commit/45725311e7e85d51b4c9f13a3b8acd0bb3fa59b9))
+* **pii warning:** remove pii warning ([4fc1305](https://github.com/sweetgreen/sg-node-logger/commit/4fc13052b88a0f10f0caf5108b141a2ed91b8ac0))
+
 ## [1.7.1](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.0...v1.7.1) (2021-01-21)
 
 
