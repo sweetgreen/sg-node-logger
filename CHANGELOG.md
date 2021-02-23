@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.2...v1.7.3) (2021-02-23)
+
+
+### Bug Fixes
+
+* **gh-actions:** revert GH_TOKEN usage ([0edc996](https://github.com/sweetgreen/sg-node-logger/commit/0edc9966d382ceab65766a241b412ec41268b3ea))
+
 ## [1.7.2](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.1...v1.7.2) (2021-02-23)
 
 
