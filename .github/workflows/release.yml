@@ -25,7 +25,6 @@ jobs:
 
       - run: yarn build
       - run: echo $secrets.GITHUB_TOKEN
-      - run: echo ${secrets.GITHUB_TOKEN}
       - run: echo ${{secrets.GITHUB_TOKEN}}
 
       # FIXME: Add tests
