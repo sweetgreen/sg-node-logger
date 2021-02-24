@@ -1,3 +1,10 @@
+## [1.7.6](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.5...v1.7.6) (2021-02-24)
+
+
+### Bug Fixes
+
+* **vulnerabilities:** update semantic-release related packages ([01365e1](https://github.com/sweetgreen/sg-node-logger/commit/01365e19bf28b4155db04248e81a99c34248e32d))
+
 ## [1.7.5](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.4...v1.7.5) (2021-02-24)
 
 
