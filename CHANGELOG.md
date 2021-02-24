@@ -1,3 +1,13 @@
+## [1.7.4](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.3...v1.7.4) (2021-02-24)
+
+
+### Bug Fixes
+
+* **gh-actions:** trying to fix release auth error ([a8635b4](https://github.com/sweetgreen/sg-node-logger/commit/a8635b435cee199866df0ae70198d07661795a4d))
+* **gh-actions:** trying to fix release auth error - 1 ([15d3e8f](https://github.com/sweetgreen/sg-node-logger/commit/15d3e8fcae42088ce6219bb0fcbecd38e7852dec))
+* **gh-actions:** trying to fix release auth error - 2 ([ec97065](https://github.com/sweetgreen/sg-node-logger/commit/ec97065af43cac2473a9a3682c3d93aaa84c3441))
+* **gh-actions:** trying to fix release auth error - 3 ([77933f5](https://github.com/sweetgreen/sg-node-logger/commit/77933f55e97401f7f04decb8e6ec2604573afb93))
+
 ## [1.7.3](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.2...v1.7.3) (2021-02-23)
 
 
