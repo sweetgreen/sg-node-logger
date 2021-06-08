@@ -114,11 +114,14 @@ import { logDebug, initLogger } from '@sweetgreen/sg-node-logger';
 // Initialize logger once and only once
 // NOTE: Subsequent usage of `logDebug` does NOT need to be paired with `initLogger()`.
 // NOTE: This simple out of the box usage style does not require the presence of `NODE_ENV`.
+
 initLogger('application-name');
 
 // Log away
 logDebug('Debug message');
 ```
+
+#### 🚨 NOTE: When initializing in an application using `dd-trace,` the `dd-trace` initialization should come prior to `initLogger`. See [here](https://sweetgreen.atlassian.net/wiki/spaces/DevOps/pages/1929413719/Advanced+Datadog+Features+Helpful+Tips#Missing-Endpoints-/-URL-Routes) for more information.
 
 ### Helper Functions (recommended)
 
