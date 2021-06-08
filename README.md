@@ -121,10 +121,7 @@ initLogger('application-name');
 logDebug('Debug message');
 ```
 
-#### 🚨 NOTE: When initializing in an application using `dd-tace,` the `dd-trace` initialization should come prior to `initLogger`. See [here](https://sweetgreen.atlassian.net/wiki/spaces/DevOps/pages/1929413719/Advanced+Datadog+Features+Helpful+Tips#Missing-Endpoints-/-URL-Routes) for more information.
-
-
-
+#### 🚨 NOTE: When initializing in an application using `dd-trace,` the `dd-trace` initialization should come prior to `initLogger`. See [here](https://sweetgreen.atlassian.net/wiki/spaces/DevOps/pages/1929413719/Advanced+Datadog+Features+Helpful+Tips#Missing-Endpoints-/-URL-Routes) for more information.
 
 ### Helper Functions (recommended)
 
