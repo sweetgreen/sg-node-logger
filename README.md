@@ -482,3 +482,45 @@ With this option, the following defaults will be used:
 ## Contributing
 
 This repo uses commitizen and is set up in such a way that when you commit, you'll be prompted with a commit wizard. Your inputs will determine what version CI will bump this package to 🍻
+
+## Testing
+
+Example of mocking `sg-node-logger`:
+
+```
+//  your.test.ts
+
+const { logError } = require('@sweetgreen/sg-node-logger');
+
+// At the top of your file include jest.mock()
+
+jest.mock('@sweetgreen/sg-node-logger', () => {
+  return {
+    logError: jest.fn(),
+    logInfo: jest.fn(),
+  };
+});
+
+
+//  Within unit test
+
+   it('throws a console error when message is sent with delay', () => {
+      const message = {
+        kitchen_update_at: stringDateToUTC(new Date().toISOString(), 1000000),
+      };
+      const testQueue = 'myQueue';
+      const delaySeconds = 0;
+
+      const messageParams = {
+        MessageBody: JSON.stringify(message),
+        QueueUrl: testQueue,
+        DelaySeconds: delaySeconds,
+      };
+
+      sendMessageFunc(messageParams);
+      expect(logError).toHaveBeenCalled();
+    });
+
+```
+
+See [Run-the-Pass](https://github.com/sweetgreen/run-the-pass/blob/main/lib/aws/__tests__/sqs.test.js) for full example
