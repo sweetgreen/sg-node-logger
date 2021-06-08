@@ -518,7 +518,7 @@ jest.mock('@sweetgreen/sg-node-logger', () => {
       };
 
       sendMessageFunc(messageParams);
-      expect(logError).toHaveBeenCalled();
+      expect(logError).toHaveBeenCalled();  //  Alternative example: you could spy on the implementation to check for message
     });
 
 ```
