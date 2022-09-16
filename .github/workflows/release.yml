@@ -50,6 +50,10 @@ jobs:
               {
                 name: 'alpha',
                 prerelease: true
+              },
+              {
+                name: 'so-2122/security_updates',
+                prerelease: true
               }
             ]
           extra_plugins: |
