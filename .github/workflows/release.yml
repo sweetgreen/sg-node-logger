@@ -2,7 +2,7 @@
 # events but only for the main branch
 on:
   push:
-    branches: [main, so-2122/security_updates]
+    branches: [main, alpha]
   pull_request:
     branches: [main]
 
@@ -49,10 +49,6 @@ jobs:
               },
               {
                 name: 'alpha',
-                prerelease: true
-              },
-              {
-                name: 'so-2122/security_updates',
                 prerelease: true
               }
             ]
