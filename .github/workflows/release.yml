@@ -2,7 +2,7 @@
 # events but only for the main branch
 on:
   push:
-    branches: [main]
+    branches: [main, so-2122/security_updates]
   pull_request:
     branches: [main]
 
