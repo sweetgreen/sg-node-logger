@@ -5,6 +5,11 @@ import WinstonCloudWatch from 'winston-cloudwatch';
 
 import { LogLevel } from './types';
 import { ParameterLoggerError } from './errors';
+import {
+  CloudWatchLogs,
+  CloudWatchLogsClient,
+  CloudWatchLogsClientConfig,
+} from '@aws-sdk/client-cloudwatch-logs';
 
 /**
  * Basic console stdout
@@ -98,6 +103,8 @@ export function awsCloudWatchTransport({
   const minUploadRateInMis = 200;
   const maxRetentionInDays = 180;
   const minRetentionInDays = 1;
+  let cloudWatchLogsClientConfig;
+  const helloTest = 1;
 
   if (!awsRegion) {
     throw new ParameterLoggerError(
@@ -125,10 +132,20 @@ export function awsCloudWatchTransport({
         secretAccessKey: secretAccessKey,
       },
     });
+    cloudWatchLogsClientConfig = {
+      region: awsRegion,
+      credentials: {
+        accessKeyId: accessKeyId,
+        secretAccessKey: secretAccessKey,
+      },
+    };
   } else {
     AWS.config.update({
       region: awsRegion,
     });
+    cloudWatchLogsClientConfig = {
+      region: awsRegion,
+    };
   }
 
   if (
@@ -152,7 +169,7 @@ export function awsCloudWatchTransport({
   }
 
   return new WinstonCloudWatch({
-    cloudWatchLogs: new AWS.CloudWatchLogs(),
+    cloudWatchLogs: new CloudWatchLogs(cloudWatchLogsClientConfig),
     level: LogLevel[minimumLogLevel].toLowerCase(),
     logGroupName: logGroupName,
     // NOTE: setting 'logStreamName' to a function will split logs across multiple streams.

@@ -32,6 +32,7 @@
     "typescript": "^4.0.5"
   },
   "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "^3.171.0",
     "@types/node": "^18.7.18",
     "@types/winston": "^2.4.4",
     "aws-sdk": "^2.1216.0",
