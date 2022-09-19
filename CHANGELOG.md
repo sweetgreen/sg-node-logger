@@ -1,3 +1,11 @@
+## [1.7.7-alpha.1](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.6...v1.7.7-alpha.1) (2022-09-19)
+
+
+### Bug Fixes
+
+* **deploy-process:** testing removal of husky precommit hook for github actions ([ceedf9f](https://github.com/sweetgreen/sg-node-logger/commit/ceedf9f7c0d09841f30d6f0cdf08eaa4863500a1))
+* **vulnerabilities:** no-op to trigger an alpha build ([62603e1](https://github.com/sweetgreen/sg-node-logger/commit/62603e11dc3cb0041ac6446a6d2f2657ce303c17))
+
 ## [1.7.6](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.5...v1.7.6) (2021-02-24)
 
 
