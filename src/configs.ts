@@ -43,6 +43,42 @@ export function colorizedConsoleConfig(): EnvironmentConfig[] {
   ];
 }
 
+// /**
+//  * Simple predefined configuration
+//  *
+//  * Setup:
+//  * - Production: AwsCloudWatch - Info
+//  * - PreProduction: ColorizedConsole - Info
+//  */
+// export function simplePredefinedConfig(): EnvironmentConfig[] {
+//   return [
+//     {
+//       nodeEnvironmentName: Environment.Production,
+//       transports: [
+//         {
+//           type: Transport.AwsCloudWatch,
+//           minimumLogLevel: LogLevel.Info,
+//           awsRegion: '',
+//           logGroupName: '',
+//           applicationName: '',
+//           accessKeyId: '',
+//           secretAccessKey: '',
+//           uploadRateInMilliseconds: 1000,
+//           retentionInDays: 180,
+//         } as AwsCloudwatchTransportConfig,
+//       ],
+//     },
+//     {
+//       nodeEnvironmentName: Environment.Development,
+//       transports: [
+//         {
+//           minimumLogLevel: LogLevel.Info,
+//         } as ColorizedConsoleConfig,
+//       ],
+//     },
+//   ];
+// }
+
 /**
  * Predefined configuration using raw JSON consoles in all environments
  */
