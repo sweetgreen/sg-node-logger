@@ -1,3 +1,13 @@
+## [1.7.7-alpha.2](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.7-alpha.1...v1.7.7-alpha.2) (2022-12-14)
+
+
+### Bug Fixes
+
+* **deploy-process:** adds husky hooks to package.json ([334f3a2](https://github.com/sweetgreen/sg-node-logger/commit/334f3a2ea38f33586187eba93ac6c67d58834817))
+* **deploy-process:** reverts changes to configs.ts ([eae0c5e](https://github.com/sweetgreen/sg-node-logger/commit/eae0c5e4eb94ca956b87ead86106c46bbe97f43c))
+* **deploy-process:** testing readding husky precommit hook ([6553b8a](https://github.com/sweetgreen/sg-node-logger/commit/6553b8a69d9461dc299017c2db41e83e7ec1d466))
+* **deploy-process:** updates yarn.lock ([56acbf2](https://github.com/sweetgreen/sg-node-logger/commit/56acbf2f3cf67bd81627ebed6daa72e7dfa77c81))
+
 ## [1.7.7-alpha.1](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.6...v1.7.7-alpha.1) (2022-09-19)
 
 
