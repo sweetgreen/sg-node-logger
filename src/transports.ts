@@ -5,11 +5,7 @@ import WinstonCloudWatch from 'winston-cloudwatch';
 
 import { LogLevel } from './types';
 import { ParameterLoggerError } from './errors';
-import {
-  CloudWatchLogs,
-  CloudWatchLogsClient,
-  CloudWatchLogsClientConfig,
-} from '@aws-sdk/client-cloudwatch-logs';
+import { CloudWatchLogs } from '@aws-sdk/client-cloudwatch-logs';
 
 /**
  * Basic console stdout
@@ -104,7 +100,6 @@ export function awsCloudWatchTransport({
   const maxRetentionInDays = 180;
   const minRetentionInDays = 1;
   let cloudWatchLogsClientConfig;
-  const helloTest = 1;
 
   if (!awsRegion) {
     throw new ParameterLoggerError(
