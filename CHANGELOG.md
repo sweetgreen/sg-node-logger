@@ -1,3 +1,16 @@
+## [1.7.7](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.6...v1.7.7) (2022-12-15)
+
+
+### Bug Fixes
+
+* **deploy-process:** adds husky hooks to package.json ([334f3a2](https://github.com/sweetgreen/sg-node-logger/commit/334f3a2ea38f33586187eba93ac6c67d58834817))
+* **deploy-process:** reverts changes to configs.ts ([eae0c5e](https://github.com/sweetgreen/sg-node-logger/commit/eae0c5e4eb94ca956b87ead86106c46bbe97f43c))
+* **deploy-process:** testing readding husky precommit hook ([6553b8a](https://github.com/sweetgreen/sg-node-logger/commit/6553b8a69d9461dc299017c2db41e83e7ec1d466))
+* **deploy-process:** testing removal of husky precommit hook for github actions ([ceedf9f](https://github.com/sweetgreen/sg-node-logger/commit/ceedf9f7c0d09841f30d6f0cdf08eaa4863500a1))
+* **deploy-process:** updates yarn.lock ([56acbf2](https://github.com/sweetgreen/sg-node-logger/commit/56acbf2f3cf67bd81627ebed6daa72e7dfa77c81))
+* **transport-cleanup:** cleanup unused refs and code from transports.ts ([81f33c1](https://github.com/sweetgreen/sg-node-logger/commit/81f33c151800d4069904f39b7e1534aeb3833adb))
+* **vulnerabilities:** no-op to trigger an alpha build ([62603e1](https://github.com/sweetgreen/sg-node-logger/commit/62603e11dc3cb0041ac6446a6d2f2657ce303c17))
+
 ## [1.7.7-alpha.3](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.7-alpha.2...v1.7.7-alpha.3) (2022-12-15)
 
 
