@@ -1,3 +1,10 @@
+## [1.7.7-alpha.3](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.7-alpha.2...v1.7.7-alpha.3) (2022-12-15)
+
+
+### Bug Fixes
+
+* **transport-cleanup:** cleanup unused refs and code from transports.ts ([81f33c1](https://github.com/sweetgreen/sg-node-logger/commit/81f33c151800d4069904f39b7e1534aeb3833adb))
+
 ## [1.7.7-alpha.2](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.7-alpha.1...v1.7.7-alpha.2) (2022-12-14)
 
 
