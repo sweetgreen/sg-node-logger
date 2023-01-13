@@ -1,3 +1,11 @@
+## [1.7.8-alpha.1](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.7...v1.7.8-alpha.1) (2023-01-13)
+
+
+### Bug Fixes
+
+* **no-op:** testing alpha release ([f1dadc5](https://github.com/sweetgreen/sg-node-logger/commit/f1dadc5228621fa5714f7d54f2d33feaa4169bf5))
+* **release-pipe:** Update to semantic-release-action@v3 ([20eddcd](https://github.com/sweetgreen/sg-node-logger/commit/20eddcd10aa3008abe34d7e8bc23b9009b5f7836))
+
 ## [1.7.7](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.6...v1.7.7) (2022-12-15)
 
 
