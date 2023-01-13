@@ -1,3 +1,10 @@
+## [1.7.8-alpha.3](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.8-alpha.2...v1.7.8-alpha.3) (2023-01-13)
+
+
+### Bug Fixes
+
+* **security-updates:** resolves existing security vulnerabilities ([6e45bee](https://github.com/sweetgreen/sg-node-logger/commit/6e45bee228b1ee09024dbe24a7e644d7df08529e))
+
 ## [1.7.8-alpha.2](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.8-alpha.1...v1.7.8-alpha.2) (2023-01-13)
 
 
