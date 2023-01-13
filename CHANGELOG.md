@@ -1,3 +1,10 @@
+## [1.7.8-alpha.2](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.8-alpha.1...v1.7.8-alpha.2) (2023-01-13)
+
+
+### Bug Fixes
+
+* **merge-main:** Merge branch 'main' into alpha ([5f515a7](https://github.com/sweetgreen/sg-node-logger/commit/5f515a74cdf155918a96049797e7ae05791d4d07))
+
 ## [1.7.8-alpha.1](https://github.com/sweetgreen/sg-node-logger/compare/v1.7.7...v1.7.8-alpha.1) (2023-01-13)
 
 
